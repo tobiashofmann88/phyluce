@@ -12,6 +12,7 @@ Created on 27 December 2013 13:12 PST (-0800)
 """
 
 from __future__ import absolute_import
+
 from phyluce.common import FullPaths, is_dir, is_file
 from phyluce.assembly import abyss
 
@@ -86,8 +87,8 @@ def configure_parser(sub_parsers):
         default=False,
         help="""Cleanup all intermediate Trinity files""",
     )
-    sp.set_defaults(func=abyss_assembly)
+    sp.set_defaults(func=run_abyss_assembly)
 
 
-def abyss_assembly(args, parser):
+def run_abyss_assembly(args, parser):
     abyss.main(args, parser)
