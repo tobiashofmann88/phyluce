@@ -16,16 +16,17 @@ import sys
 
 from phyluce.cli import sub_match_uce_contigs
 from phyluce.cli import sub_match_uce_counts
+from phyluce.cli import sub_match_uce_fastas
 
 
-descr = "Identify UCE contigs from assembled data."
+descr = "Get UCE contigs from assembled data."
 
 
 def configure_parser(sub_parsers):
     if len(sys.argv) == 2:
         sys.argv.append("-h")
     p = sub_parsers.add_parser(
-        'match',
+        'get',
         description=descr,
         help=descr
     )
@@ -37,3 +38,4 @@ def configure_parser(sub_parsers):
 
     sub_match_uce_contigs.configure_parser(sub_parsers)
     sub_match_uce_counts.configure_parser(sub_parsers)
+    sub_match_uce_fastas.configure_parser(sub_parsers)
