@@ -27,13 +27,13 @@ def main():
     # setup main program args
     p = argparse.ArgumentParser(
         description="phyluce is a software package for processing UCE" + \
-            "and other phylogenomics data for systematics and population " + \
+            "and other phylogenomic data for systematics and population " + \
             "genetics."
     )
     p.add_argument(
         "-V", "--version",
         action = "version",
-        version = "phyluce {}".format("1.0.0")
+        version = "phyluce {}".format("2.0.0")
     )
 
     sub_parsers = p.add_subparsers(
