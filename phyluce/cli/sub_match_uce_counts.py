@@ -22,7 +22,7 @@ descr = "Get the counts of UCE given a taxon list."
 
 def configure_parser(sub_parsers):
     sp = sub_parsers.add_parser(
-        'uce-count',
+        'uce-counts',
         description=descr,
         help=descr
     )
