@@ -98,8 +98,8 @@ def configure_parser(sub_parsers):
         default=None,
         help="""A optional output file in which to store those loci that appear to be duplicates.""",
     )
-    sp.set_defaults(func=execute)
+    sp.set_defaults(func=get_uce_contigs)
 
 
-def execute(args, parser):
+def get_uce_contigs(args, parser):
     uce_contigs.main(args, parser)
