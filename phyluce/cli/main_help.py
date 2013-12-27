@@ -14,7 +14,7 @@ Created on 26 December 2013 16:12 PST (-0800)
 from __future__ import absolute_import
 
 
-descr = "Displays a list of available phyluce commands and their help strings."
+descr = "Get help info on a phyluce command."
 
 
 def configure_parser(sub_parsers):

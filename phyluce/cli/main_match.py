@@ -12,14 +12,17 @@ Created on 27 December 2013 13:12 PST (-0800)
 """
 
 from __future__ import absolute_import
+import sys
 
 from phyluce.cli import sub_match_uce_contigs
 
 
-descr = "Methods to identify and separate UCE contigs from all contigs."
+descr = "Identify UCE contigs from assembled data."
 
 
 def configure_parser(sub_parsers):
+    if len(sys.argv) == 2:
+        sys.argv.append("-h")
     p = sub_parsers.add_parser(
         'match',
         description=descr,

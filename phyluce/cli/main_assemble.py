@@ -12,15 +12,22 @@ Created on 27 December 2013 13:12 PST (-0800)
 """
 
 from __future__ import absolute_import
+import sys
 
 from phyluce.cli import sub_assemble_velvet
 from phyluce.cli import sub_assemble_abyss
 
 
-descr = "Methods to assemble cleaned sequencing reads."
+descr = "Assemble cleaned/trimmed sequencing reads."
 
 def configure_parser(sub_parsers):
-    p = sub_parsers.add_parser('assemble', description=descr, help=descr)
+    if len(sys.argv) == 2:
+        sys.argv.append("-h")
+    p = sub_parsers.add_parser(
+        'assemble',
+        description=descr,
+        help=descr
+    )
 
     sub_parsers = p.add_subparsers(
         metavar = "command",
