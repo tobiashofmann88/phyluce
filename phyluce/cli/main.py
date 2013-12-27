@@ -17,6 +17,7 @@ import argparse
 
 from phyluce.cli import main_help
 from phyluce.cli import main_assemble
+from phyluce.cli import main_match
 
 
 def main():
@@ -42,7 +43,7 @@ def main():
 
     main_help.configure_parser(sub_parsers)
     main_assemble.configure_parser(sub_parsers)
-    #main_match.configure_parser(sub_parsers)
+    main_match.configure_parser(sub_parsers)
     #main_count.configure_parser(sub_parsers)
     #main_fastas.configure_parser(sub_parsers)
     #main_align.configure_parser(sub_parsers)
