@@ -25,7 +25,6 @@ from Bio.Seq import Seq
 from phyluce.log import setup_logging
 from phyluce.third_party import which
 from phyluce.raw_reads import get_input_data, get_input_files
-from phyluce.common import FullPaths, is_dir, is_file
 
 
 def run_abyss_pe(abyss_pe, kmer, reads, cores, output, log):
