@@ -15,6 +15,7 @@ from __future__ import absolute_import
 import sys
 
 from phyluce.cli import sub_match_uce_contigs
+from phyluce.cli import sub_match_uce_counts
 
 
 descr = "Identify UCE contigs from assembled data."
@@ -35,3 +36,4 @@ def configure_parser(sub_parsers):
     )
 
     sub_match_uce_contigs.configure_parser(sub_parsers)
+    sub_match_uce_counts.configure_parser(sub_parsers)
