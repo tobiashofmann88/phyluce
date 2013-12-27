@@ -1,5 +1,5 @@
 from __future__ import absolute_import
-from phyluce.core import helpers
+
 from phyluce.cli import sub_assemble_velvet
 from phyluce.cli import sub_assemble_abyss
 
