@@ -15,7 +15,6 @@ from __future__ import absolute_import
 import sys
 import argparse
 
-
 from phyluce.cli import main_help
 from phyluce.cli import main_assemble
 
