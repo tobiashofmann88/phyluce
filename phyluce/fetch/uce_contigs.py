@@ -18,13 +18,11 @@ import sys
 import glob
 import copy
 import sqlite3
-import argparse
 from collections import defaultdict
 from Bio import SeqIO
 
 from phyluce import lastz
 from phyluce.log import setup_logging
-
 
 
 def create_probe_database(log, db, organisms, uces):
@@ -35,9 +33,13 @@ def create_probe_database(log, db, organisms, uces):
     c.execute("PRAGMA foreign_keys = ON")
     try:
         create_string = [org + ' text' for org in organisms]
-        query = "CREATE TABLE matches (uce text primary key, {0})".format(','.join(create_string))
+        query = "CREATE TABLE matches (uce text primary key, {0})".format(
+            ','.join(create_string)
+        )
         c.execute(query)
-        query = "CREATE TABLE match_map (uce text primary key, {0})".format(','.join(create_string))
+        query = "CREATE TABLE match_map (uce text primary key, {0})".format(
+            ','.join(create_string)
+        )
         c.execute(query)
         # convert uces to list of tuples for executemany
         all_uces = [(uce,) for uce in uces]
@@ -64,11 +66,19 @@ def store_lastz_results_in_db(c, matches, orientation, critter):
         # We should have dropped all duplicates at this point
         assert len(match) == 1, "More than one match"
         item = list(match)[0]
-        insert_string = "UPDATE matches SET {0} = 1 WHERE uce = '{1}'".format(critter, item)
+        insert_string = "UPDATE matches SET {0} = 1 WHERE uce = '{1}'".format(
+            critter,
+            item
+        )
         c.execute(insert_string)
         #pdb.set_trace()
         orient_key = "{0}({1})".format(key, list(orientation[item])[0])
-        insert_string = "UPDATE match_map SET {0} = '{1}' WHERE uce = '{2}'".format(critter, orient_key, item)
+        insert_string = (
+            "UPDATE match_map SET {0} = '{1}' WHERE uce = '{2}'".format(
+                critter,
+                orient_key,
+                item)
+            )
         c.execute(insert_string)
 
 
@@ -100,7 +110,8 @@ def get_dupes(log, lastz_file, regex):
 
 def contig_count(contig):
     """Return a count of contigs from a fasta file"""
-    return sum([1 for line in open(contig, 'rU').readlines() if line.startswith('>')])
+    return sum([1 for line in open(contig, 'rU').readlines() if
+               line.startswith('>')])
 
 
 def get_organism_names_from_fasta_files(ff):
@@ -125,7 +136,8 @@ def check_loci_for_dupes(revmatches):
         if len(node) > 1:
             dupe_contigs.extend(node)
             dupe_uces.append(uce)
-    #dupe_contigs = set([i for uce, node in revmatches.iteritems() if len(node) > 1 for i in list(node)])
+    #dupe_contigs = set([i for uce, node in revmatches.iteritems() if
+                        # len(node) > 1 for i in list(node)])
     #pdb.set_trace()
     return set(dupe_contigs), set(dupe_uces)
 
@@ -133,9 +145,9 @@ def check_loci_for_dupes(revmatches):
 def pretty_log_output(log, critter, matches, contigs, pd, mc, uce_dupe_uces):
     """Write some nice output to the logfile/stdout"""
     unique_matches = sum([1 for node, uce in matches.iteritems()])
-    out = "{0}: {1} ({2:.2f}%) uniques of {3} contigs, {4} dupe probe matches, " + \
-        "{5} UCE loci removed for matching multiple contigs, {6} contigs " + \
-        "removed for matching multiple UCE loci"
+    out = ("{0}: {1} ({2:.2f}%) uniques of {3} contigs, {4} dupe probe "
+           "matches, {5} UCE loci removed for matching multiple contigs, "
+           "{6} contigs removed for matching multiple UCE loci")
     log.info(
         out.format(
             critter,
@@ -150,7 +162,10 @@ def pretty_log_output(log, critter, matches, contigs, pd, mc, uce_dupe_uces):
 
 
 def get_contig_name(header):
-    """parse the contig name from the header of either velvet/trinity assembled contigs"""
+    """
+    parse the contig name from the header of either velvet/trinity
+    assembled contigs
+    """
     match = re.search("^(Node_\d+|NODE_\d+|comp\d+_c\d+_seq\d+).*", header)
     return match.groups()[0]
 
@@ -166,8 +181,10 @@ def main(args, parser):
     if not os.path.isdir(args.output):
         os.makedirs(args.output)
     else:
-        raise IOError("The directory {} already exists.  Please check and remove by hand.".format(args.output))
-    uces = set(new_get_probe_name(seq.id, regex) for seq in SeqIO.parse(open(args.probes, 'rU'), 'fasta'))
+        raise IOError("The directory {} already exists. Please check "
+                      "and remove by hand.".format(args.output))
+    uces = set(new_get_probe_name(seq.id, regex)
+               for seq in SeqIO.parse(open(args.probes, 'rU'), 'fasta'))
     if args.dupefile:
         dupes = get_dupes(log, args.dupefile, regex)
     else:
@@ -229,14 +246,22 @@ def main(args, parser):
         if dupefile is not None:
             log.info("Writing duplicates file for {}".format(critter))
             if len(uce_dupe_uces) != 0:
-                dupefile.write("[{} - probes hitting multiple contigs]\n".format(critter))
+                dupefile.write(
+                    "[{} - probes hitting multiple contigs]\n".format(critter)
+                )
                 for uce in uce_dupe_uces:
-                    dupefile.write("{}:{}\n".format(uce, ', '.join(revmatches[uce])))
+                    dupefile.write(
+                        "{}:{}\n".format(uce, ', '.join(revmatches[uce]))
+                    )
                 dupefile.write("\n")
             if len(contigs_matching_mult_uces) != 0:
-                dupefile.write("[{} - contigs hitting multiple probes]\n".format(critter))
+                dupefile.write(
+                    "[{} - contigs hitting multiple probes]\n".format(critter)
+                )
                 for dupe in contigs_matching_mult_uces:
-                    dupefile.write("{}:{}\n".format(dupe, ', '.join(matches[dupe])))
+                    dupefile.write(
+                        "{}:{}\n".format(dupe, ', '.join(matches[dupe]))
+                    )
                 dupefile.write("\n")
         #pdb.set_trace()
         # remove dupe and/or dubious nodes/contigs
@@ -259,7 +284,8 @@ def main(args, parser):
         dupefile.close()
     log.info("{}".format("-" * 65))
     log.info("The LASTZ alignments are in {}".format(args.output))
-    log.info("The UCE match database is in {}".format(os.path.join(args.output, "probes.matches.sqlite")))
+    log.info("The UCE match database is in {}".format(
+        os.path.join(args.output, "probes.matches.sqlite"))
+    )
     text = " Completed {} ".format(my_name)
     log.info(text.center(65, "="))
-

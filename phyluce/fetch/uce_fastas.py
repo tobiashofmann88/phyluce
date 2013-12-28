@@ -15,7 +15,6 @@ from __future__ import absolute_import
 import os
 import re
 import sqlite3
-import argparse
 import ConfigParser
 from collections import defaultdict
 
@@ -24,23 +23,28 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
 from phyluce.log import setup_logging
-from phyluce.common import FullPaths, is_dir, is_file, get_names_from_config
+from phyluce.common import get_names_from_config
 
 
 def get_nodes_for_uces(c, organism, uces, extend=False, notstrict=False):
     # get only those UCEs we know are in the set
     uces = [("\'{0}\'").format(u) for u in uces]
     if not extend:
-        query = "SELECT lower({0}), uce FROM match_map where uce in ({1})".format(organism, ','.join(uces))
+        query = ("SELECT lower({0}), uce FROM match_map "
+                 "where uce in ({1})".format(organism, ','.join(uces)))
     else:
-        query = "SELECT lower({0}), uce FROM extended.match_map where uce in ({1})".format(organism, ','.join(uces))
+        query = ("SELECT lower({0}), uce FROM extended.match_map "
+                 "where uce in ({1})".format(organism, ','.join(uces)))
     c.execute(query)
     rows = c.fetchall()
     node_dict = defaultdict()
     missing = []
     for node in rows:
         if node[0] is not None:
-            match = re.search('^(node_\d+|comp\d+_c\d+_seq\d+)\(([+-])\)', node[0])
+            match = re.search(
+                '^(node_\d+|comp\d+_c\d+_seq\d+)\(([+-])\)',
+                node[0]
+            )
             node_dict[match.groups()[0]] = (node[1], match.groups()[1])
         elif notstrict:
             missing.append(node[1])
@@ -50,7 +54,15 @@ def get_nodes_for_uces(c, organism, uces, extend=False, notstrict=False):
 
 
 def find_file(contigs, name):
-    extensions = ['.fa', '.fasta', '.contigs.fasta', '.contigs.fa', '.gz', '.fasta.gz', '.fa.gz']
+    extensions = [
+        '.fa',
+        '.fasta',
+        '.contigs.fasta',
+        '.contigs.fa',
+        '.gz',
+        '.fasta.gz',
+        '.fa.gz'
+    ]
     for ext in extensions:
         reads1 = os.path.join(contigs, name) + ext
         reads2 = os.path.join(contigs, name.replace('-', '_')) + ext
@@ -65,15 +77,18 @@ def find_file(contigs, name):
         if reads is not None:
             break
     if reads is None:
-        raise ValueError("Cannot find the a fasta file for {} with any of the extensions ({}) ".format(
-            name,
-            ', '.join(extensions)
-        ))
+        raise ValueError("Cannot find the a fasta file for {} with any "
+                         "of the extensions ({}) ".format(name,
+                                                          ', '.join(extensions)
+                                                          ))
     return reads
 
 
 def get_contig_name(header):
-    """parse the contig name from the header of either velvet/trinity assembled contigs"""
+    """
+    parse the contig name from the header of either velvet/trinity
+    assembled contigs
+    """
     match = re.search("^(Node_\d+|NODE_\d+|comp\d+_c\d+_seq\d+).*", header)
     return match.groups()[0]
 
@@ -103,8 +118,12 @@ def main(args, parser):
     c = conn.cursor()
     # attach to external database, if passed as option
     if args.extend_locus_db:
-        log.info("Attaching extended database {}".format(os.path.basename(args.extend_locus_db)))
-        query = "ATTACH DATABASE '{0}' AS extended".format(args.extend_locus_db)
+        log.info("Attaching extended database {}".format(
+            os.path.basename(args.extend_locus_db))
+        )
+        query = "ATTACH DATABASE '{0}' AS extended".format(
+            args.extend_locus_db
+        )
         c.execute(query)
     organisms = get_names_from_config(config, 'Organisms')
     log.info("There are {} taxa in the match-count-config file named {}".format(
@@ -113,9 +132,13 @@ def main(args, parser):
     ))
     uces = get_names_from_config(config, 'Loci')
     if not args.incomplete_matrix:
-        log.info("There are {} shared UCE loci in a COMPLETE matrix".format(len(uces)))
+        log.info("There are {} shared UCE loci in a COMPLETE matrix".format(
+            len(uces))
+        )
     else:
-        log.info("There are {} UCE loci in an INCOMPLETE matrix".format(len(uces)))
+        log.info("There are {} UCE loci in an INCOMPLETE matrix".format(
+            len(uces))
+        )
     regex = re.compile("[N,n]{1,21}")
     if args.incomplete_matrix:
         incomplete_outf = open(args.incomplete_matrix, 'w')
@@ -129,12 +152,24 @@ def main(args, parser):
             if args.incomplete_matrix:
                 if not organism.endswith('*'):
                     reads = find_file(args.contigs, name)
-                    node_dict, missing = get_nodes_for_uces(c, organism, uces, extend=False, notstrict=True)
+                    node_dict, missing = get_nodes_for_uces(
+                        c,
+                        organism,
+                        uces,
+                        extend=False,
+                        notstrict=True
+                    )
                 elif args.extend_locus_contigs:
                     # remove the asterisk
                     name = name.rstrip('*')
                     reads = find_file(args.extend_locus_contigs, name)
-                    node_dict, missing = get_nodes_for_uces(c, organism.rstrip('*'), uces, extend=True, notstrict=True)
+                    node_dict, missing = get_nodes_for_uces(
+                        c,
+                        organism.rstrip('*'),
+                        uces,
+                        extend=True,
+                        notstrict=True
+                    )
             else:
                 if not name.endswith('*'):
                     reads = find_file(args.contigs, name)
@@ -143,34 +178,49 @@ def main(args, parser):
                     # remove the asterisk
                     name = name.rstrip('*')
                     reads = find_file(args.extend_locus_contigs, name)
-                    node_dict, missing = get_nodes_for_uces(c, organism.rstrip('*'), uces, extend=True)
+                    node_dict, missing = get_nodes_for_uces(
+                        c,
+                        organism.rstrip('*'),
+                        uces,
+                        extend=True
+                    )
             count = 0
-            log.info("There are {} UCE loci for {}".format(len(node_dict), organism))
+            log.info("There are {} UCE loci for {}".format(
+                len(node_dict),
+                organism
+                ))
             log.info("Parsing and renaming contigs for {}".format(organism))
             for seq in SeqIO.parse(open(reads, 'rU'), 'fasta'):
                 name = get_contig_name(seq.id).lower()
                 if name in node_dict.keys():
-                    seq.id = "{0}_{1} |{0}".format(node_dict[name][0], organism.rstrip('*'))
+                    seq.id = "{0}_{1} |{0}".format(
+                        node_dict[name][0],
+                        organism.rstrip('*')
+                    )
                     seq.name = ''
                     seq.description = ''
-                    # deal with strandedness because aligners sometimes dont, which
-                    # is annoying
+                    # deal with strandedness because aligners sometimes
+                    # dont, which is annoying
                     if node_dict[name][1] == '-':
                         seq.seq = seq.seq.reverse_complement()
-                    # Replace any occurrences of <21 Ns in a given sequence with
-                    # blanks.  These should gap out during alignment. Also, replace
-                    # leading/trailing lowercase bases from velvet assemblies.
-                    # Lowercase bases indicate low coverage, and these
-                    # have been problematic in downstream alignments).
+                    # Replace any occurrences of <21 Ns in a given sequence
+                    # with blanks.  These should gap out during alignment.
+                    # Also, replace leading/trailing lowercase bases from
+                    # velvet assemblies. Lowercase bases indicate low coverage,
+                    # and these have been problematic in downstream alignments)
                     seq, count = replace_and_remove_bases(regex, seq, count)
                     uce_fasta_out.write(seq.format('fasta'))
                     written.append(str(node_dict[name][0]))
                 else:
                     pass
             if count > 0:
-                log.info("Replaced <20 ambiguous bases (N) in {} contigs for {}".format(count, organism))
+                log.info(
+                    "Replaced <20 ambiguous bases (N) in {} "
+                    "contigs for {}".format(count, organism))
             if args.incomplete_matrix and missing:
-                log.info("Writing missing locus information to {}".format(args.incomplete_matrix))
+                log.info("Writing missing locus information to {}".format(
+                    args.incomplete_matrix)
+                )
                 incomplete_outf.write("[{0}]\n".format(organism))
                 for name in missing:
                     incomplete_outf.write("{0}\n".format(name))
