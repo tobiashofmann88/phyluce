@@ -32,7 +32,7 @@ class Mafft(GenericAlign):
 
     def __init__(self, input):
         """initialize, calling superclass __init__ also"""
-        super(Align, self).__init__(input)
+        super(Mafft, self).__init__(input)
 
     def run_alignment(self, clean=True):
         mafft = which("mafft")
@@ -43,14 +43,17 @@ class Mafft(GenericAlign):
         # run MAFFT on the temp file
         cmd = [mafft, "--adjustdirection", "--maxiterate", "1000", self.input]
         # just pass all ENV params
-        proc = subprocess.Popen(cmd,
-                stderr=subprocess.PIPE,
-                stdout=aln_stdout
-            )
+        proc = subprocess.Popen(
+            cmd,
+            stderr=subprocess.PIPE,
+            stdout=aln_stdout
+        )
         stderr = proc.communicate()
         aln_stdout.close()
-        self.alignment = AlignIO.read(open(aln, 'rU'), "fasta", \
-                alphabet=Gapped(IUPAC.unambiguous_dna, "-"))
+        self.alignment = AlignIO.read(
+            open(aln, 'rU'), "fasta",
+            alphabet=Gapped(IUPAC.unambiguous_dna, "-")
+        )
         if clean:
             self._clean(aln)
 
@@ -62,7 +65,7 @@ class Muscle(GenericAlign):
 
     def __init__(self, input):
         """initialize, calling superclass __init__ also"""
-        super(Align, self).__init__(input)
+        super(Muscle, self).__init__(input)
 
     def run_alignment(self, clean=True):
         """ muscle """
@@ -73,13 +76,17 @@ class Muscle(GenericAlign):
         os.close(fd)
         # run MUSCLE on the temp file
         cmd = [muscle, "-in", self.input, "-out", aln]
-        proc = subprocess.Popen(cmd,
-                stderr=subprocess.PIPE,
-                stdout=subprocess.PIPE
-            )
+        proc = subprocess.Popen(
+            cmd,
+            stderr=subprocess.PIPE,
+            stdout=subprocess.PIPE
+        )
         stdout, stderr = proc.communicate()
-        self.alignment = AlignIO.read(open(aln, 'rU'), \
-                "fasta", alphabet=Gapped(IUPAC.unambiguous_dna, "-"))
+        self.alignment = AlignIO.read(
+            open(aln, 'rU'),
+            "fasta",
+            alphabet=Gapped(IUPAC.unambiguous_dna, "-")
+        )
         # cleanup temp files
         if clean:
             self._clean(aln)
