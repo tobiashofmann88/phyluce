@@ -19,6 +19,10 @@ from operator import itemgetter
 from collections import defaultdict
 import shutil
 
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
+from Bio.Alphabet import IUPAC, Gapped
+
 import pdb
 
 class FullPaths(argparse.Action):
@@ -284,3 +288,13 @@ def write_alignments_to_outdir(log, outdir, alignments, format):
                 outf.write(aln.trimmed.format(format))
         else:
             log.warn("DROPPED {0} from output".format(locus))
+
+
+def record_formatter(name, sequence):
+        """return a string formatted as a biopython sequence record"""
+        return SeqRecord(
+            Seq(sequence, Gapped(IUPAC.ambiguous_dna, "-?")),
+            id=name,
+            name=name,
+            description=name
+        )
