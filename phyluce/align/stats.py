@@ -13,10 +13,8 @@ Created on 27 December 2013 16:12 PST (-0800)
 
 from __future__ import absolute_import
 
-import os
 import math
 import numpy
-import argparse
 import multiprocessing
 from Bio import AlignIO
 from collections import Counter
@@ -56,7 +54,7 @@ def get_stats(work):
     meta.nucleotides = Counter()
     for k, v in meta.characters.iteritems():
         if k in nucleotides:
-            meta.nucleotides.update({k:v})
+            meta.nucleotides.update({k: v})
     meta.gaps = meta.characters["-"]
     meta.missing = meta.characters["?"]
     return meta
@@ -66,7 +64,7 @@ def get_lengths(summary):
     lengths = numpy.array([aln.length for aln in summary])
     total = numpy.sum(lengths)
     mean = numpy.mean(lengths)
-    ci  = 1.96 * (numpy.std(lengths, ddof=1) / numpy.sqrt(len(lengths)))
+    ci = 1.96 * (numpy.std(lengths, ddof=1) / numpy.sqrt(len(lengths)))
     min = numpy.min(lengths)
     max = numpy.max(lengths)
     return total, mean, ci, min, max
@@ -75,7 +73,7 @@ def get_lengths(summary):
 def get_taxa(summary):
     taxa = numpy.array([aln.taxa for aln in summary])
     mean = numpy.mean(taxa)
-    ci  = 1.96 * (numpy.std(taxa, ddof=1) / numpy.sqrt(len(taxa)))
+    ci = 1.96 * (numpy.std(taxa, ddof=1) / numpy.sqrt(len(taxa)))
     min = numpy.min(taxa)
     max = numpy.max(taxa)
     cnt = Counter(taxa)
@@ -85,7 +83,7 @@ def get_taxa(summary):
 def get_percent_missing(summary):
     missing = numpy.array([aln.percent_missing for aln in summary])
     mean = numpy.mean(missing)
-    ci  = 1.96 * (numpy.std(missing, ddof=1) / numpy.sqrt(len(missing)))
+    ci = 1.96 * (numpy.std(missing, ddof=1) / numpy.sqrt(len(missing)))
     min = numpy.min(missing)
     max = numpy.max(missing)
     return mean, ci, min, max
@@ -186,7 +184,7 @@ def log_character_dist(log, all_bases):
     text = " Character counts "
     log.info(text.center(65, "-"))
     for k in sorted(all_bases.keys()):
-        if k in ['A','C','G','T','a','c','g','t', '-', '?']:
+        if k in ['A', 'C', 'G', 'T', 'a', 'c', 'g', 't', '-', '?']:
             log.info("[Characters] '{0}' is present {1:,} times".format(
                 k,
                 all_bases[k],
@@ -206,7 +204,9 @@ def main(args, parser):
     work = [[file, args.input_format] for file in files]
     log.info("Computing summary statistics using {} cores".format(args.cores))
     if args.cores > 1:
-        assert args.cores <= multiprocessing.cpu_count(), "You've specified more cores than you have"
+        assert args.cores <= multiprocessing.cpu_count(), ("You've specified "
+                                                           "more cores than "
+                                                           "you have")
         pool = multiprocessing.Pool(args.cores)
         summary = pool.map(get_stats, work)
     else:
