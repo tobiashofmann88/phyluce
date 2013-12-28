@@ -14,7 +14,7 @@ Created on 27 December 2013 14:12 PST (-0800)
 
 from __future__ import absolute_import
 
-from phyluce.match import uce_contigs
+from phyluce.fetch import uce_contigs
 from phyluce.common import FullPaths, is_dir, is_file, CreateDir
 
 

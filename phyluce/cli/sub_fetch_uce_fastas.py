@@ -14,7 +14,7 @@ Created on 27 December 2013 14:12 PST (-0800)
 
 from __future__ import absolute_import
 
-from phyluce.match import uce_fastas
+from phyluce.fetch import uce_fastas
 from phyluce.common import FullPaths, is_dir, is_file, get_names_from_config
 
 

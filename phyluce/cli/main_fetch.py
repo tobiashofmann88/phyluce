@@ -14,19 +14,19 @@ Created on 27 December 2013 13:12 PST (-0800)
 from __future__ import absolute_import
 import sys
 
-from phyluce.cli import sub_match_uce_contigs
-from phyluce.cli import sub_match_uce_counts
-from phyluce.cli import sub_match_uce_fastas
+from phyluce.cli import sub_fetch_uce_contigs
+from phyluce.cli import sub_fetch_uce_counts
+from phyluce.cli import sub_fetch_uce_fastas
 
 
-descr = "Get UCE contigs from assembled data."
+descr = "Fetch (AKA get) UCE contigs from assembled data."
 
 
 def configure_parser(sub_parsers):
     if len(sys.argv) == 2:
         sys.argv.append("-h")
     p = sub_parsers.add_parser(
-        'get',
+        'fetch',
         description=descr,
         help=descr
     )
@@ -36,6 +36,6 @@ def configure_parser(sub_parsers):
         dest = "cmd",
     )
 
-    sub_match_uce_contigs.configure_parser(sub_parsers)
-    sub_match_uce_counts.configure_parser(sub_parsers)
-    sub_match_uce_fastas.configure_parser(sub_parsers)
+    sub_fetch_uce_contigs.configure_parser(sub_parsers)
+    sub_fetch_uce_counts.configure_parser(sub_parsers)
+    sub_fetch_uce_fastas.configure_parser(sub_parsers)
