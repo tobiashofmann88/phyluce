@@ -15,6 +15,7 @@ from __future__ import absolute_import
 import os
 import sys
 import copy
+import shutil
 import tempfile
 import multiprocessing
 from Bio import SeqIO
@@ -22,6 +23,24 @@ from collections import defaultdict
 
 from phyluce.common import write_alignments_to_outdir
 from phyluce.log import setup_logging
+
+
+def copy_file(files, bad_files, output, expected_copy):
+    copied_count = 0
+    bad_count = 0
+    for file in files:
+        fname = os.path.basename(file)
+        if fname not in bad_files:
+            outpath = os.path.join(output, fname)
+            copied_count += 1
+            shutil.copy(file, outpath)
+        else:
+            bad_count += 1
+    try:
+        assert expected_copy == copied_count
+    except:
+        raise IOError("Copied a different number of files than expected")
+    return copied_count, bad_count
 
 
 def build_locus_dict(log, loci, locus, record, ambiguous=False):

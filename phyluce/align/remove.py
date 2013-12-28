@@ -12,32 +12,11 @@ Created on 28 December 2013 12:12 PST (-0800)
 """
 
 from __future__ import absolute_import
-import os
-import shutil
 import ConfigParser
 
 from phyluce.common import get_alignment_files
+from phyluce.align.common import copy_file
 from phyluce.log import setup_logging
-
-import pdb
-
-
-def copy_file(files, bad_files, output, expected_copy):
-    copied_count = 0
-    bad_count = 0
-    for file in files:
-        fname = os.path.basename(file)
-        if fname not in bad_files:
-            outpath = os.path.join(output, fname)
-            copied_count += 1
-            shutil.copy(file, outpath)
-        else:
-            bad_count += 1
-    try:
-        assert expected_copy == copied_count
-    except:
-        raise IOError("Copied a different number of files than expected")
-    return copied_count, bad_count
 
 
 def main(args, parser):
