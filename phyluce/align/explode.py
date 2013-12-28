@@ -1,10 +1,10 @@
 
 from __future__ import absolute_import
 import os
+import re
 import sys
 import ConfigParser
 from Bio import AlignIO
-from Bio.Seq import Seq
 
 from phyluce.log import setup_logging
 from phyluce.common import get_alignment_files, record_formatter
@@ -22,7 +22,7 @@ def explode_by_taxon(log, args, files, names):
         locus = os.path.splitext(basename)[0]
         aln = AlignIO.read(file, args.input_format)
         for taxon in aln:
-            name = taxon.id.replace(locus, '').lstrip('_')
+            name = re.sub("^(_R_)*{}_*".format(locus), "", taxon.id)
             if name not in args.exclude:
                 try:
                     shortname = names[name]
@@ -33,10 +33,14 @@ def explode_by_taxon(log, args, files, names):
                 d[shortname] = open(os.path.join(args.output, new_file), 'w')
             new_seq = str(taxon.seq).replace('-', '').replace('?', '')
             if not len(new_seq) == 0:
-                seq_record = record_formatter(shortname, new_seq)
-                d[shortname].write(seq_record.format("fasta"))
+                new_seq_record = record_formatter(
+                    "{} |locus={}".format(shortname, locus),
+                    new_seq
+                )
+                d[shortname].write(new_seq_record.format("fasta"))
     for k, v in d.iteritems():
         v.close()
+    print ""
 
 
 def explode_by_locus(log, args, files, names):
@@ -60,14 +64,17 @@ def explode_by_locus(log, args, files, names):
                     shortname = name
                 new_seq = str(taxon.seq).replace('-', '').replace('?', '')
                 if not len(new_seq) == 0:
-                    new_seq_record = record_formatter(shortname, new_seq)
+                    new_seq_record = record_formatter(
+                        "{} |locus={}".format(shortname, locus),
+                        new_seq
+                    )
                     outp.write(new_seq_record.format("fasta"))
                     count += 1
                 else:
                     print locus
         taxon_count.append(count)
         outp.close()
-    print "\n"
+    print ""
     log.info("Final taxon count = {}".format(
         set(taxon_count)
     ))

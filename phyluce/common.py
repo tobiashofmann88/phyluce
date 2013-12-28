@@ -295,6 +295,6 @@ def record_formatter(name, sequence):
         return SeqRecord(
             Seq(sequence, Gapped(IUPAC.ambiguous_dna, "-?")),
             id=name,
-            name=name,
-            description=name
+            name="",
+            description=""
         )
