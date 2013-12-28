@@ -49,4 +49,6 @@ def setup_logging(args):
     log.info("Version: {}".format(init.__version__))
     for arg, value in sorted(vars(args).items()):
         log.info("Argument --{}: {}".format(arg, value))
+    text = " Running {} ".format(my_name)
+    log.info(text.center(65, "."))
     return log, my_name
