@@ -16,6 +16,7 @@ import sys
 
 from phyluce.cli import sub_align_mafft
 from phyluce.cli import sub_align_muscle
+from phyluce.cli import sub_align_stats
 
 
 descr = "Alignment routines for UCE (and other) FASTA data."
@@ -37,4 +38,5 @@ def configure_parser(sub_parsers):
 
     sub_align_mafft.configure_parser(sub_parsers, engine="mafft")
     sub_align_muscle.configure_parser(sub_parsers, engine="muscle")
+    sub_align_stats.configure_parser(sub_parsers)
 
