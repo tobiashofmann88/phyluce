@@ -19,6 +19,7 @@ from phyluce.cli import sub_align_muscle
 from phyluce.cli import sub_align_check
 from phyluce.cli import sub_align_remove
 from phyluce.cli import sub_align_repair
+from phyluce.cli import sub_align_explode
 from phyluce.cli import sub_align_stats
 
 
@@ -44,4 +45,5 @@ def configure_parser(sub_parsers):
     sub_align_check.configure_parser(sub_parsers)
     sub_align_remove.configure_parser(sub_parsers)
     sub_align_repair.configure_parser(sub_parsers)
+    sub_align_explode.configure_parser(sub_parsers)
     sub_align_stats.configure_parser(sub_parsers)
