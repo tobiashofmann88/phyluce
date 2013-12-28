@@ -82,18 +82,18 @@ def configure_parser(sub_parsers):
         help="The output alignment format.",
     )
     sp.add_argument(
-        "--verbosity",
-        type=str,
-        choices=["INFO", "WARN", "CRITICAL"],
-        default="INFO",
-        help="""The logging level to use."""
-    )
-    sp.add_argument(
         "--cores",
         type=int,
         default=1,
         help="Process alignments in parallel using --cores for alignment. "
              "This is the number of PHYSICAL CPUs."
+    )
+    sp.add_argument(
+        "--verbosity",
+        type=str,
+        choices=["INFO", "WARN", "CRITICAL"],
+        default="INFO",
+        help="""The logging level to use."""
     )
     sp.add_argument(
         "--log-path",
