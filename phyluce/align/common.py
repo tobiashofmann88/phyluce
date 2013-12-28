@@ -15,7 +15,6 @@ from __future__ import absolute_import
 import os
 import sys
 import copy
-import argparse
 import tempfile
 import multiprocessing
 from Bio import SeqIO
@@ -30,7 +29,8 @@ def build_locus_dict(log, loci, locus, record, ambiguous=False):
         if not "N" in record.seq:
             loci[locus].append(record)
         else:
-            log.warn("Skipping {} because it contains ambiguous bases".format(locus))
+            log.warn("Skipping {} because it contains"
+                     " ambiguous bases".format(locus))
     else:
         loci[locus].append(record)
     return loci
@@ -54,17 +54,17 @@ def align(params):
     aln.run_alignment()
     if notrim:
         aln.trim_alignment(
-                method="notrim"
-            )
+            method="notrim"
+        )
     else:
         aln.trim_alignment(
-                method="running",
-                window_size=window,
-                proportion=proportion,
-                threshold=threshold,
-                max_divergence=divergence,
-                min_len=min_len
-            )
+            method="running",
+            window_size=window,
+            proportion=proportion,
+            threshold=threshold,
+            max_divergence=divergence,
+            min_len=min_len
+        )
     if aln.trimmed:
         sys.stdout.write(".")
     else:
@@ -91,11 +91,13 @@ def get_fasta_dict(log, args):
         if args.notstrict:
             if len(data) < 3:
                 del loci[locus]
-                log.warn("DROPPED locus {0}. Too few taxa (N < 3).".format(locus))
+                log.warn("DROPPED locus {0}. "
+                         "Too few taxa (N < 3).".format(locus))
         else:
             if len(data) < args.taxa:
                 del loci[locus]
-                log.warn("DROPPED locus {0}. Alignment does not contain all {1} taxa.".format(locus, args.taxa))
+                log.warn("DROPPED locus {0}. Alignment does not "
+                         "contain all {1} taxa.".format(locus, args.taxa))
     return loci
 
 
@@ -106,16 +108,19 @@ def main(args, parser, engine):
     loci = get_fasta_dict(log, args)
     log.info("Aligning with {}".format(str(args.aligner).upper()))
     opts = [[args.window, args.threshold, args.no_trim, args.proportion,
-           args.max_divergence, args.min_length, engine] \
-           for i in range(len(loci))]
+             args.max_divergence, args.min_length, engine]
+            for i in range(len(loci))]
     # combine loci and options
     params = zip(loci.items(), opts)
-    log.info("Alignment begins. 'X' indicates dropped alignments (these are reported after alignment)")
+    log.info("Alignment begins. 'X' indicates dropped alignments "
+             "(these are reported after alignment)")
     # During alignment, drop into sys.stdout for progress indicator
     # because logging in multiprocessing is more painful than what
     # we really need.  Return to logging when alignment completes.
     if args.cores > 1:
-        assert args.cores <= multiprocessing.cpu_count(), "You've specified more cores than you have"
+        assert args.cores <= multiprocessing.cpu_count(), ("You've specified "
+                                                           "more cores than "
+                                                           "you have")
         pool = multiprocessing.Pool(args.cores)
         alignments = pool.map(align, params)
     else:
@@ -125,7 +130,12 @@ def main(args, parser, engine):
     # drop back into logging
     log.info("Alignment ends")
     # write the output files
-    write_alignments_to_outdir(log, args.output, alignments, args.output_format)
+    write_alignments_to_outdir(
+        log,
+        args.output,
+        alignments,
+        args.output_format
+    )
     # end
     text = " Completed {} ".format(my_name)
     log.info(text.center(65, "="))
