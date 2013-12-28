@@ -32,8 +32,8 @@ def configure_parser(sub_parsers):
     )
 
     sub_parsers = p.add_subparsers(
-        metavar = "command",
-        dest = "cmd",
+        metavar="command",
+        dest="cmd",
     )
 
     sub_fetch_uce_contigs.configure_parser(sub_parsers)

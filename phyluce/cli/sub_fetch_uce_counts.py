@@ -22,45 +22,45 @@ descr = "Get the counts of UCE given a taxon list."
 
 def configure_parser(sub_parsers):
     sp = sub_parsers.add_parser(
-        'uce-counts',
+        "uce-counts",
         description=descr,
         help=descr
     )
 
     sp.add_argument(
-        '--locus-db',
+        "--locus-db",
         required=True,
         action=FullPaths,
         type=is_file,
-        help='The SQL database file holding probe matches to targeted loci ' + \
-             '(usually "lastz/probe.matches.sqlite".)'
+        help="The SQL database file holding probe matches to targeted loci "
+             "(usually 'lastz/probe.matches.sqlite'.)"
     )
     sp.add_argument(
-        '--taxon-list-config',
+        "--taxon-list-config",
         required=True,
         action=FullPaths,
         type=is_file,
-        help='The config file containing lists of the taxa you want to ' + \
-             'include in matrices.'
+        help="The config file containing lists of the taxa you want to "
+             "include in matrices."
     )
     sp.add_argument(
-        '--taxon-group',
+        "--taxon-group",
         required=True,
         type=str,
-        help='The [group] in the config file whose specific data matrix ' + \
-             'you want to create.',
+        help="The [group] in the config file whose specific data matrix "
+             "you want to create.",
     )
     sp.add_argument(
-        '--output',
+        "--output",
         required=True,
-        action=FullPaths,
+        action=CreateDir,
         help="The path to the output file you want to create."
     )
     sp.add_argument(
-        '--incomplete-matrix',
+        "--incomplete-matrix",
         action="store_true",
         default=False,
-        help='Generate an incomplete matrix of data.',
+        help="Generate an incomplete matrix of data.",
     )
     sp.add_argument(
         "--verbosity",
@@ -77,44 +77,45 @@ def configure_parser(sub_parsers):
         help="""The path to a directory to hold logs."""
     )
     sp.add_argument(
-        '--optimize',
+        "--optimize",
         action="store_true",
-        help='Return optimum groups of probes by enumeration (default) or sampling.'
+        help="Return optimum groups of probes by enumeration (default) "
+             "or sampling."
     )
     sp.add_argument(
-        '--random',
+        "--random",
         action="store_true",
-        help='Optimize by sampling.'
+        help="Optimize by sampling."
     )
     sp.add_argument(
-        '--samples',
+        "--samples",
         type=int,
         default=10,
-        help='The number of samples to take.'
+        help="The number of samples to take."
     )
     sp.add_argument(
-        '--sample-size',
-        dest='sample_size',
+        "--sample-size",
+        dest="sample_size",
         type=int,
         default=10,
-        help='The group size of samples.'
+        help="The group size of samples."
     )
     sp.add_argument(
-        '--extend-locus-db',
+        "--extend-locus-db",
         action=FullPaths,
         type=is_file,
-        help='An SQLlite database file holding probe matches to other ' + \
-        'targeted loci'
+        help="An SQLlite database file holding probe matches to other "
+             "targeted loci"
     )
     sp.add_argument(
-        '--silent',
-        dest='silent',
+        "--silent",
+        dest="silent",
         action="store_true",
-        help='Don\'t print probe names.'
+        help="Don\'t print probe names."
     )
     sp.add_argument(
-        '--keep-counts',
-        dest='keep_counts',
+        "--keep-counts",
+        dest="keep_counts",
         action="store_true"
     )
     sp.set_defaults(func=get_uce_contig_counts)

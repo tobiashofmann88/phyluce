@@ -33,59 +33,60 @@ def configure_parser(sub_parsers):
         type=is_file,
         action=FullPaths,
         default=None,
-        help="""A configuration file containing reads to assemble"""
+        help="A configuration file containing reads to assemble"
     )
     input.add_argument(
         "--dir",
         type=is_dir,
         action=FullPaths,
         default=None,
-        help="""A directory of reads to assemble""",
+        help="A directory of reads to assemble",
     )
     sp.add_argument(
         "--output",
         required=True,
         action=CreateDir,
         default=None,
-        help="""The directory in which to store the assembly data"""
+        help="The directory in which to store the assembly data"
     )
     sp.add_argument(
         "--kmer",
         type=int,
         default=31,
-        help="""The kmer value to use"""
+        help="The kmer value to use"
     )
     sp.add_argument(
         "--cores",
         type=int,
         default=1,
-        help="""The number of compute cores/threads to run with Velvet"""
+        help="The number of compute cores/threads to run with Velvet"
     )
     sp.add_argument(
         "--subfolder",
         type=str,
         default='',
-        help="""A subdirectory, below the level of the group, containing the reads"""
+        help="A subdirectory, below the level of the group, containing "
+             "the reads"
     )
     sp.add_argument(
         "--verbosity",
         type=str,
         choices=["INFO", "WARN", "CRITICAL"],
         default="INFO",
-        help="""The logging level to use"""
+        help="The logging level to use"
     )
     sp.add_argument(
         "--log-path",
         action=FullPaths,
         type=is_dir,
         default=None,
-        help="""The path to a directory to hold logs."""
+        help="The path to a directory to hold logs."
     )
     sp.add_argument(
         "--clean",
         action="store_true",
         default=False,
-        help="""Cleanup all intermediate Trinity files""",
+        help="Cleanup all intermediate Trinity files",
     )
     sp.set_defaults(func=run_velvet_assembly)
 

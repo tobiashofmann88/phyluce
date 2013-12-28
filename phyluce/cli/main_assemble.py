@@ -20,6 +20,7 @@ from phyluce.cli import sub_assemble_abyss
 
 descr = "Assemble cleaned/trimmed sequencing reads."
 
+
 def configure_parser(sub_parsers):
     if len(sys.argv) == 2:
         sys.argv.append("-h")
@@ -30,8 +31,8 @@ def configure_parser(sub_parsers):
     )
 
     sub_parsers = p.add_subparsers(
-        metavar = "command",
-        dest = "cmd",
+        metavar="command",
+        dest="cmd",
     )
 
     sub_assemble_velvet.configure_parser(sub_parsers)

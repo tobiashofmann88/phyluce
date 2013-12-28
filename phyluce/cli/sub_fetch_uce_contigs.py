@@ -20,19 +20,10 @@ from phyluce.common import FullPaths, is_dir, is_file, CreateDir
 
 descr = "Locate UCE contigs using LASTZ."
 
-'''
-help =  (descr.replace(".", " ") +
-        "and store the data in a relational database.  The matching process is dependent on the " +
-        "probe names in the file.  If the probe names are not like 'uce-1001_p1' where 'uce-' " +
-        "indicates we're searching for uce loci, '1001' indicates locus 1001, '_p1' indicates " +
-        "this is probe 1 for locus 1001, you will need to set the optional --regex parameter. " +
-        "So, if your probe names are 'MyProbe-A_probe1', the --regex will look like " +
-        "--regex='^(MyProbe-\W+)(?:_probe\d+.*)'")
-'''
 
 def configure_parser(sub_parsers):
     sp = sub_parsers.add_parser(
-        'uce-contigs',
+        "uce-contigs",
         description=descr,
         help=descr
     )
@@ -41,7 +32,8 @@ def configure_parser(sub_parsers):
         required=True,
         type=is_dir,
         action=FullPaths,
-        help="The directory containing the assembled contigs in which you are searching for UCE loci."
+        help="The directory containing the assembled contigs in which you "
+             "are searching for UCE loci."
     )
     sp.add_argument(
         '--probes',
@@ -53,22 +45,23 @@ def configure_parser(sub_parsers):
     sp.add_argument(
         '--output',
         required=True,
-        action=FullPaths,
-        help="The directory in which to store the resulting SQL database and LASTZ files."
+        action=CreateDir,
+        help="The directory in which to store the resulting SQL database"
+             " and LASTZ files."
     )
     sp.add_argument(
         "--verbosity",
         type=str,
         choices=["INFO", "WARN", "CRITICAL"],
         default="INFO",
-        help="""The logging level to use."""
+        help="The logging level to use."
     )
     sp.add_argument(
         "--log-path",
         action=FullPaths,
         type=is_dir,
         default=None,
-        help="""The path to a directory to hold logs."""
+        help="The path to a directory to hold logs."
     )
     sp.add_argument(
         '--min-coverage',
@@ -84,19 +77,22 @@ def configure_parser(sub_parsers):
     )
     sp.add_argument(
         '--dupefile',
-        help="Path to self-to-self lastz results for baits to remove potential duplicate probes."
+        help="Path to self-to-self lastz results for baits to remove "
+             "potential duplicate probes."
     )
     sp.add_argument(
         "--regex",
         type=str,
         default="^(uce-\d+)(?:_p\d+.*)",
-        help="""A regular expression to apply to the probe names for replacement [default='^(uce-\d+)(?:_p\d+.*)'].""",
+        help="A regular expression to apply to the probe names for "
+             "replacement [default='^(uce-\d+)(?:_p\d+.*)']."
     )
     sp.add_argument(
         "--keep-duplicates",
         type=str,
         default=None,
-        help="""A optional output file in which to store those loci that appear to be duplicates.""",
+        help="A optional output file in which to store those loci that "
+             "appear to be duplicates."
     )
     sp.set_defaults(func=get_uce_contigs)
 

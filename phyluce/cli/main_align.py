@@ -32,11 +32,10 @@ def configure_parser(sub_parsers):
     )
 
     sub_parsers = p.add_subparsers(
-        metavar = "command",
-        dest = "cmd",
+        metavar="command",
+        dest="cmd",
     )
 
     sub_align_mafft.configure_parser(sub_parsers, engine="mafft")
     sub_align_muscle.configure_parser(sub_parsers, engine="muscle")
     sub_align_stats.configure_parser(sub_parsers)
-
