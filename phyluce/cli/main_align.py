@@ -16,6 +16,8 @@ import sys
 
 from phyluce.cli import sub_align_mafft
 from phyluce.cli import sub_align_muscle
+from phyluce.cli import sub_align_check
+from phyluce.cli import sub_align_remove
 from phyluce.cli import sub_align_stats
 
 
@@ -38,4 +40,6 @@ def configure_parser(sub_parsers):
 
     sub_align_mafft.configure_parser(sub_parsers, engine="mafft")
     sub_align_muscle.configure_parser(sub_parsers, engine="muscle")
+    sub_align_check.configure_parser(sub_parsers)
+    sub_align_remove.configure_parser(sub_parsers)
     sub_align_stats.configure_parser(sub_parsers)
