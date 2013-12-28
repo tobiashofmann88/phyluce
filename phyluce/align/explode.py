@@ -9,8 +9,6 @@ from Bio import AlignIO
 from phyluce.log import setup_logging
 from phyluce.common import get_alignment_files, record_formatter
 
-import pdb
-
 
 def explode_by_taxon(log, args, files, names):
     log.info("Exploding {} alignments by taxon.".format(len(files)))
