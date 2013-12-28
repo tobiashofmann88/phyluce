@@ -26,21 +26,21 @@ from phyluce.log import setup_logging
 
 
 def copy_file(files, bad_files, output, expected_copy):
-    copied_count = 0
-    bad_count = 0
+    copied_names = []
+    bad_names = []
     for file in files:
         fname = os.path.basename(file)
         if fname not in bad_files:
             outpath = os.path.join(output, fname)
-            copied_count += 1
+            copied_names.append(file)
             shutil.copy(file, outpath)
         else:
-            bad_count += 1
+            bad_names.append(file)
     try:
-        assert expected_copy == copied_count
+        assert expected_copy == len(copied_names)
     except:
         raise IOError("Copied a different number of files than expected")
-    return copied_count, bad_count
+    return copied_names, bad_names
 
 
 def build_locus_dict(log, loci, locus, record, ambiguous=False):

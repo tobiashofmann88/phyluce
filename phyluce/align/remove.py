@@ -35,15 +35,15 @@ def main(args, parser):
     log.info("There are {} TOTAL files.".format(len(files)))
     log.info("There are {} BAD files.".format(len(bad_files)))
     expected_copy = len(files) - len(bad_files)
-    copied_count, bad_count = copy_file(
+    copied_names, bad_names = copy_file(
         files,
         bad_files,
         args.output,
         expected_copy
     )
     log.info("Copied {} files.  Did not copy {} files.".format(
-        copied_count,
-        bad_count
+        len(copied_names),
+        len(bad_names)
     ))
     # end
     text = " Completed {} ".format(my_name)
