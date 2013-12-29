@@ -13,6 +13,7 @@ Created on 29 December 2013 10:40 PST (-0800)
 
 from __future__ import absolute_import
 import os
+import sys
 import multiprocessing
 
 from Bio import AlignIO
@@ -44,6 +45,8 @@ def get_all_taxon_names(format, files):
 
 
 def remove_taxon_from_alignments(work):
+    sys.stdout.write('.')
+    sys.stdout.flush()
     file, args, taxa_to_keep = work
     new_align = Alignment([], alphabet=Gapped(IUPAC.unambiguous_dna, "-?"))
     aln = AlignIO.read(file, args.input_format)
@@ -84,6 +87,7 @@ def main(args, parser):
         results = pool.map(remove_taxon_from_alignments, work)
     else:
         results = map(remove_taxon_from_alignments, work)
+    print ""
     for f in results:
         if f is not None:
             log.info("Dropped {} because fewer than 1 taxon.".format(f))
