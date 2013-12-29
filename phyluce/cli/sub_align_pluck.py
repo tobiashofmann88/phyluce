@@ -18,7 +18,8 @@ from phyluce.align.var import align_io_choices
 from phyluce.common import is_dir, FullPaths
 
 
-descr = "Pluck taxon from a set of alignments and output as FASTA sequence."
+descr = ("Pluck taxon from a set of alignments. Output plucked "
+         "taxon as FASTA sequence records.")
 
 
 def configure_parser(sub_parsers):

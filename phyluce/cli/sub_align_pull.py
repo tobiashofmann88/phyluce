@@ -19,7 +19,8 @@ from phyluce.align.var import align_io_choices
 from phyluce.common import is_dir, FullPaths, CreateDir
 
 
-descr = "Pull taxon/taxa from a set of alignments."
+descr = ("Pull taxon/taxa from a set of alignments. "
+         "Output new alignments without pulled taxon/taxa.")
 
 
 def configure_parser(sub_parsers):
