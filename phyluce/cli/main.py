@@ -19,6 +19,7 @@ from phyluce.cli import main_help
 from phyluce.cli import main_assemble
 from phyluce.cli import main_fetch
 from phyluce.cli import main_align
+from phyluce.cli import main_convert
 
 
 def main():
@@ -42,13 +43,12 @@ def main():
         dest="cmd",
     )
 
-    main_help.configure_parser(sub_parsers)
     main_assemble.configure_parser(sub_parsers)
     main_fetch.configure_parser(sub_parsers)
     main_align.configure_parser(sub_parsers)
-    #main_stats.configure_parser(sub_parsers)
-    #main_clean.configure_parser(sub_parsers)
-    #main_convert.configure_parser(sub_parsers)
+    main_convert.configure_parser(sub_parsers)
+    #main_misc.configure_parser(sub_parsers)
+    main_help.configure_parser(sub_parsers)
 
     try:
         import argcomplete
