@@ -15,6 +15,7 @@ from __future__ import absolute_import
 import sys
 
 from phyluce.cli import sub_misc_fasta
+from phyluce.cli import sub_misc_fastq
 
 
 descr = "Miscellaneous utilities for files and directories."
@@ -35,3 +36,4 @@ def configure_parser(sub_parsers):
     )
 
     sub_misc_fasta.configure_parser(sub_parsers)
+    sub_misc_fastq.configure_parser(sub_parsers)
