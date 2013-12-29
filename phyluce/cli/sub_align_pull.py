@@ -19,12 +19,12 @@ from phyluce.align.var import align_io_choices
 from phyluce.common import is_dir, FullPaths, CreateDir
 
 
-descr = "Extract taxa from a set of alignments."
+descr = "Pull taxon/taxa from a set of alignments."
 
 
 def configure_parser(sub_parsers):
     sp = sub_parsers.add_parser(
-        "extract",
+        "pull",
         description=descr,
         help=descr,
     )
