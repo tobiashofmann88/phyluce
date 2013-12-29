@@ -40,7 +40,7 @@ Guide
 .. toctree::
    :maxdepth: 1
 
-   introduction
+   purpose
    installation
    study-design
    pre-processing-qc

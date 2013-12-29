@@ -22,8 +22,8 @@ Later contributions were made by other labs and individuals, including:
 * Laurie Sorenson (UCLA)
 * Kevin Winker (U. Alaska - Fairbanks)
 
-Additional Contributors
------------------------
+Additional Personnel
+--------------------
 
 Additionally, the following individuals have contributed samples, funding,
 laboratory work, computer code, documentation, or all of the above:
