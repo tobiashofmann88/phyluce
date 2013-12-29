@@ -38,7 +38,7 @@ def configure_parser(sub_parsers):
         "--output",
         required=True,
         action=CreateDir,
-        help="""The output file for the concatenated phylip data""",
+        help="""The output file for the concatenated NEXUS data""",
     )
     sp.add_argument(
         "--charsets",
