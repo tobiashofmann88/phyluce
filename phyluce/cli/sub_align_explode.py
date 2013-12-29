@@ -18,7 +18,8 @@ from phyluce.align import explode
 from phyluce.common import is_dir, is_file, FullPaths, CreateDir
 
 
-descr = "Explode a set of alignment files."
+descr = ("Explode a set of alignment files by-locus or by-taxon into "
+         "the consituent set of FASTA sequence files.")
 
 
 def configure_parser(sub_parsers):
