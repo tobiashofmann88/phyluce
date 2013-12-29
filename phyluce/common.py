@@ -275,6 +275,26 @@ def get_alignment_files(log, input_dir, input_format):
     return alignments
 
 
+def get_fasta_files(log, input_dir):
+    log.info("Getting FASTA files")
+    files = []
+    for ftype in ('.fasta', '.fa', '.fsa', '.fasta.gz', '.fa.gz', '.fsa.gz'):
+        files.extend(
+            glob.glob(os.path.join(input_dir, "*{}".format(ftype)))
+        )
+    return files
+
+
+def get_fastq_files(log, input_dir):
+    log.info("Getting FASTQ files")
+    files = []
+    for ftype in ('.fastq', '.fq', '.fastq.gz', '.fq.gz'):
+        files.extend(
+            glob.glob(os.path.join(input_dir, "*{}".format(ftype)))
+        )
+    return files
+
+
 def write_alignments_to_outdir(log, outdir, alignments, format):
     log.info('Writing output files')
     for tup in alignments:
