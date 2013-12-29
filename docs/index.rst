@@ -2,29 +2,62 @@
    sphinx-quickstart on Sat Jan 22 09:04:05 2011.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
+.. include:: global.rst
 
-Welcome to phyluce's documentation!
-====================================
+phyluce:  software for UCE (and general) phylogenomics
+======================================================
 
-Contents:
+Release v\ |version|. (:ref:`Changelog`)
+
+phyluce_ (phy-**loo**-chee) is a software package that was initially developed
+for analyzing data collected from ultraconserved elements in organismal genomes
+(see :ref:`References` and http://ultraconserved.org for additional
+information).
+
+The package now includes a number of tools spanning:
+
+* the assembly of raw read data to contigs
+* the identification of UCE from assembled contigs
+* parallel alignment generation, trimming, and data summary methods in
+  preparation for analysis
+* alignment and SNP calling using UCE or other raw-read data.
+
+As it currently stands, the package is useful for analyzing both data collected
+from UCE and also data collection from other loci for other phylogenomic
+projects.
+
+phyluce_ is open-source (see :ref:`License`) and we welcome contributions
+from anyone who is interested.  Please make a pull request on github_.  The
+issue tracker for phyluce_ is also `available on github
+<https://github.com/faircloth- lab/phyluce/issues>`_.  If you have an issue,
+please do all that you can to provide sufficient data **and** a test case
+demonstrating the issue.
+
+
+Guide
+=====
 
 .. toctree::
-   :maxdepth: 3
-   
+   :maxdepth: 1
+
    introduction
    installation
    study-design
    pre-processing-qc
    pre-processing-assembly
    uce-processing
+
+Project info
+============
+.. toctree::
+   :maxdepth: 1
+
+   citing
+   references
    license
-   citations
-   about
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   changelog
+   authors
+   contributors
+   funding
+   ack
 
