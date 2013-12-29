@@ -23,6 +23,7 @@ from phyluce.cli import sub_align_repair
 from phyluce.cli import sub_align_adjust
 from phyluce.cli import sub_align_explode
 from phyluce.cli import sub_align_stats
+from phyluce.cli import sub_align_sites
 
 
 descr = "Alignment routines for UCE (and other) FASTA data."
@@ -51,3 +52,4 @@ def configure_parser(sub_parsers):
     sub_align_adjust.configure_parser(sub_parsers)
     sub_align_explode.configure_parser(sub_parsers)
     sub_align_stats.configure_parser(sub_parsers)
+    sub_align_sites.configure_parser(sub_parsers)
