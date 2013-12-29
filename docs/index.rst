@@ -22,9 +22,9 @@ The package now includes a number of tools spanning:
   preparation for analysis
 * alignment and SNP calling using UCE or other raw-read data.
 
-As it currently stands, the package is useful for analyzing both data collected
-from UCE and also data collection from other loci for other phylogenomic
-projects.
+As it stands, the phyluce_ package is useful for analyzing both data collected
+from UCE loci and also data collection from other types of loci for phylogenomic
+studies at the species, population, and individual levels.
 
 phyluce_ is open-source (see :ref:`License`) and we welcome contributions
 from anyone who is interested.  Please make a pull request on github_.  The
@@ -43,8 +43,8 @@ Guide
    purpose
    installation
    study-design
-   pre-processing-qc
-   pre-processing-assembly
+   qc
+   assembly
    uce-processing
 
 Project info
