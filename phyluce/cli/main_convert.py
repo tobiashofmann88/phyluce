@@ -16,6 +16,7 @@ import sys
 
 from phyluce.cli import sub_convert_nexus_to_phylip
 from phyluce.cli import sub_convert_nexus_to_nexus
+from phyluce.cli import sub_convert_one_align_to_another
 
 
 descr = "Convert files to different formats."
@@ -37,3 +38,4 @@ def configure_parser(sub_parsers):
 
     sub_convert_nexus_to_phylip.configure_parser(sub_parsers)
     sub_convert_nexus_to_nexus.configure_parser(sub_parsers)
+    sub_convert_one_align_to_another.configure_parser(sub_parsers)
