@@ -19,7 +19,7 @@ from phyluce.common import is_dir, FullPaths
 
 
 descr = ("Pluck taxon from a set of alignments. Output plucked "
-         "taxon as FASTA sequence records.")
+         "taxon as FASTA sequence file.")
 
 
 def configure_parser(sub_parsers):
@@ -54,6 +54,13 @@ def configure_parser(sub_parsers):
         choices=align_io_choices,
         default="nexus",
         help="The input alignment format"
+    )
+    sp.add_argument(
+        "--cores",
+        type=int,
+        default=1,
+        help="Process alignments in parallel using --cores for alignment. "
+             "This is the number of PHYSICAL CPUs."
     )
     sp.add_argument(
         "--verbosity",
