@@ -21,6 +21,7 @@ from phyluce.cli import sub_align_check
 from phyluce.cli import sub_align_remove
 from phyluce.cli import sub_align_repair
 from phyluce.cli import sub_align_adjust
+from phyluce.cli import sub_align_sift
 from phyluce.cli import sub_align_explode
 from phyluce.cli import sub_align_pull
 from phyluce.cli import sub_align_pluck
@@ -52,6 +53,7 @@ def configure_parser(sub_parsers):
     sub_align_remove.configure_parser(sub_parsers)
     sub_align_repair.configure_parser(sub_parsers)
     sub_align_adjust.configure_parser(sub_parsers)
+    sub_align_sift.configure_parser(sub_parsers)
     sub_align_pull.configure_parser(sub_parsers)
     sub_align_pluck.configure_parser(sub_parsers)
     sub_align_explode.configure_parser(sub_parsers)
