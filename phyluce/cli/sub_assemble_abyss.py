@@ -14,7 +14,7 @@ Created on 27 December 2013 13:12 PST (-0800)
 from __future__ import absolute_import
 
 from phyluce.common import FullPaths, is_dir, is_file, CreateDir
-from phyluce.assembly import abyss
+from phyluce.assemble import abyss
 
 
 descr = "Assemble reads using abYss."
