@@ -19,7 +19,7 @@ import argparse
 import subprocess
 import ConfigParser
 from phyluce.log import setup_logging
-from phyluce.third_party import which
+from phyluce.common import which
 from phyluce.helpers import FullPaths, is_dir, is_file
 from phyluce.raw_reads import get_fastq_input_files
 from phyluce.bwa import *

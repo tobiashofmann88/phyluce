@@ -19,7 +19,7 @@ import glob
 import argparse
 import subprocess
 from phyluce.log import setup_logging
-from phyluce.third_party import which
+from phyluce.common import which
 from phyluce.raw_reads import get_input_data, get_input_files
 from phyluce.helpers import FullPaths, CreateDir, is_dir, is_file
 

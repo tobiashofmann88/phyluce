@@ -13,7 +13,7 @@ import errno
 import argparse
 import subprocess
 from phyluce.helpers import is_dir, FullPaths
-from phyluce.third_party import which
+from phyluce.common import which
 
 import pdb
 
@@ -171,7 +171,7 @@ def get_samples_to_run(args, reads):
         return set([name for name in all_names if name in args.include])
     else:
         return all_names
-        
+
 def get_velvet_optimiser(name='VelvetOptimiser'):
     """ensure that velvetg, velveth, VelvetOpt, and VelvetOptimiser are in $PATH"""
     # ensure velvetg and velveth are in $PATH

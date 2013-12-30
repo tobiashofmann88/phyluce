@@ -23,7 +23,7 @@ import glob
 import shutil
 import argparse
 import subprocess
-from phyluce.third_party import which
+from phyluce.common import which
 from phyluce.helpers import FullPaths, is_dir, is_file
 from phyluce.raw_reads import get_input_data, get_input_files
 from phyluce.log import setup_logging

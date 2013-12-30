@@ -16,7 +16,7 @@ import glob
 import shutil
 import argparse
 from phyluce.helpers import FullPaths, is_file, is_dir
-from phyluce.third_party import which
+from phyluce.common import which
 from phyluce.raw_reads import get_input_data, get_fastq_input_files
 from phyluce.bwa import *
 from phyluce.log import setup_logging
