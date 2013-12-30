@@ -23,7 +23,7 @@ import ConfigParser
 from Bio import SeqIO
 from Bio.Seq import Seq
 from phyluce.log import setup_logging
-from phyluce.third_party import which
+from phyluce.common import which
 from phyluce.raw_reads import get_input_data, get_input_files
 
 

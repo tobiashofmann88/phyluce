@@ -8,14 +8,15 @@ Created by Brant Faircloth on 15 July 2011.
 Copyright 2011 Brant C. Faircloth. All rights reserved.
 """
 
+from __future__ import absolute_import
 import os
 import re
 import sys
 import glob
+import subprocess
 import argparse
 import ConfigParser
 from phyluce import lastz
-from operator import itemgetter
 from collections import defaultdict
 import shutil
 
@@ -23,7 +24,7 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from Bio.Alphabet import IUPAC, Gapped
 
-import pdb
+#import pdb
 
 class FullPaths(argparse.Action):
     """Expand user- and relative-paths"""
@@ -188,23 +189,6 @@ def get_xml_data(xml, prnt = False):
     return snps
 
 
-def which(program):
-    """ from http://stackoverflow.com/questions/377017/test-if-executable-exists-in-python"""
-    def is_exe(fpath):
-        return os.path.exists(fpath) and os.access(fpath, os.X_OK)
-
-    fpath, fname = os.path.split(program)
-    if fpath:
-        if is_exe(program):
-            return program
-    else:
-        for path in os.environ["PATH"].split(os.pathsep):
-            exe_file = os.path.join(path, program)
-            if is_exe(exe_file):
-                return exe_file
-    return None
-
-
 def snip_if_many_N_bases(regex, chromo, seq, uce, verbose = True):
     """Some genome builds contain long runs of Ns.  Since we're
     slicing reads from these genomes, sometimes these slices contains
@@ -318,3 +302,17 @@ def record_formatter(name, sequence):
             name="",
             description=""
         )
+
+
+def which(prog):
+    cmd = ["which", prog]
+    proc = subprocess.Popen(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE
+    )
+    stdout, stderr = proc.communicate()
+    if stderr:
+        raise EnvironmentError("Program {} does not appear to be installed")
+    else:
+        return stdout.strip()
