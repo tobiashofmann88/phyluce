@@ -1,0 +1,5 @@
+bx-python==0.7.1
+dendropy==3.12.0
+illumiprocessor==2.0.2
+numpy==1.7.1
+biopython==1.62
