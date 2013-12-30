@@ -22,7 +22,7 @@ import argparse
 import ConfigParser
 
 from phyluce.helpers import FullPaths, CreateDir, is_file, is_dir
-from phyluce.bwa import *
+from phyluce.snp.bwa import *
 from phyluce.log import setup_logging
 
 import pdb

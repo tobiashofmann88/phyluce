@@ -22,7 +22,7 @@ from phyluce.log import setup_logging
 from phyluce.common import which
 from phyluce.helpers import FullPaths, is_dir, is_file
 from phyluce.raw_reads import get_fastq_input_files
-from phyluce.bwa import *
+from phyluce.snp.bwa import *
 
 import pdb
 
