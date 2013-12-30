@@ -13,13 +13,10 @@ Created on 27 December 2013 13:12 PST (-0800)
 
 
 import os
-import re
 import sys
 import glob
 import shutil
-import argparse
 import subprocess
-import ConfigParser
 from Bio import SeqIO
 from Bio.Seq import Seq
 from phyluce.log import setup_logging
