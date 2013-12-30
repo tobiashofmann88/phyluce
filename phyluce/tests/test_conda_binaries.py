@@ -11,6 +11,7 @@ LICENSE.txt for more information.
 Created on 29 December 2013 17:25 PST (-0800)
 """
 
+from __future__ import absolute_import
 import os
 import pytest
 import subprocess
