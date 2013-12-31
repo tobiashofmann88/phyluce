@@ -1,7 +1,8 @@
 .. include:: global.rst
 
+************
 Installation
-============
+************
 
 phyluce_ uses a number of tools that allow it to assemble data, search for UCE
 loci, align results reads, manipulate alignments, prepare alignments for
@@ -21,7 +22,7 @@ we very strongly suggest** that users install phyluce_ using either the
 anaconda_ or miniconda_ Python distributions.
 
 Why conda?
-----------
+==========
 
 It may seem odd to impose a particular disitribution on users, and we largely
 agree.  However, conda_ makes it very easy for us to distribute both Python_ and
@@ -31,7 +32,7 @@ across very heterogenous platforms (unices, osx, etc.), make sure all the
 close to a "one-click" install that we will probably ever get.
 
 Install Process
-====================
+===============
 
 .. important:: We build and test phyluce_ using 64-bit, linux and osx computers
    (i.e., x86_64). Most modern computers are of this type.  As such, we only
@@ -154,7 +155,7 @@ Then, it's simply a matter of running::
 
 
 What conda installs
--------------------
+===================
 
 When you install phyluce, it specifies a number of dependencies that it needs
 to run.  conda_ is great because it will pull specific **versions** of the
@@ -165,7 +166,7 @@ install those on your machine, setup the paths, etc.
 Below is a list of what phyluce_ requires for installation.
 
 Installed 3rd-party dependencies
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------------
 
 * trimmomatic 0.32
 * velvet 1.2.10
@@ -176,7 +177,7 @@ Installed 3rd-party dependencies
 * raxml 8.0.1
 
 Installed python packages
-^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------
 
 * Python 2.7 (sets conda default Python to 2.7)
 * numpy 1.7
@@ -185,8 +186,9 @@ Installed python packages
 * illumiprocessor 2.0.3
 * phyluce 2.0.x
 
+
 Added benefits
---------------
+==============
 
 An added benefit of using conda_ and installing packages in this way is that
 you can also run all of these binaries without worrying about setting the
@@ -263,7 +265,7 @@ The structure of the conda repository that we use looks like the following::
 
 
 Other useful tools
-------------------
+==================
 
 You will need to be familiar with the command-line/terminal, and it helps to
 have a decent text editor for your platform (gedit [linux], Sublime Text
