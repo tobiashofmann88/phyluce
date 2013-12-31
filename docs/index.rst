@@ -53,7 +53,6 @@ Project info
    :maxdepth: 1
 
    citing
-   references
    license
    changelog
    authors
