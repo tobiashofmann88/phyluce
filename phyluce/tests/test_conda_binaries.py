@@ -84,8 +84,6 @@ class TestBinaryFunction:
             stderr=subprocess.PIPE
         )
         stdout, stderr = proc.communicate()
-        assert stdout == ""
-        assert stderr == ""
         observed_mafft = stderr.split("\n")[3].lstrip()
         expected_mafft = 'MAFFT v7.130b (2013/12/05)'
         assert observed_mafft == expected_mafft
