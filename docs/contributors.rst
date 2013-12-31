@@ -1,7 +1,9 @@
 .. include:: global.rst
 
-Personnel
-=========
+..  _Contributors:
+
+Contributors
+============
 
 A large number of people have worked on different aspects of the UCE approach
 across different taxonomic groups.  The group responsible for initial
@@ -22,8 +24,8 @@ Later contributions were made by other labs and individuals, including:
 * Laurie Sorenson (UCLA)
 * Kevin Winker (U. Alaska - Fairbanks)
 
-Additional Personnel
---------------------
+Additional Contributions
+------------------------
 
 Additionally, the following individuals have contributed samples, funding,
 laboratory work, computer code, documentation, or all of the above:
