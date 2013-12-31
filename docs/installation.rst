@@ -112,14 +112,17 @@ http://repo.continuum.io/miniconda/, download that file, and then run::
     bash Miniconda-2.2.x-MacOSX-x86_64.sh [osx]
 
 Ensure that the correct location for conda_ or miniconda_ are added to your
-$PATH (this occurs automatically on the $BASH shell).
+$PATH (this occurs automatically on the $BASH shell)::
 
-.. command-output:: echo $PATH | grep anaconda | awk '{split($0,a,":"); print a[1]}'
-   :shell:
+    $ echo $PATH | grep anaconda | awk '{split($0,a,":"); print a[1]}'
+    /Users/bcf/anaconda/bin
 
-You can also check that anaconda is running by running the `python -V` command
 
-.. command-output:: python -V
+You can also check that anaconda is running by running the `python -V`
+command::
+
+    $ python -V
+    Python 2.7.6 :: Anaconda 1.8.0 (x86_64)
 
 Notice that the output shows we're using the "Anaconda 1.8.0" version of Python_.
 If you do not see the expected output, then you likely need to edit your $PATH
@@ -192,9 +195,39 @@ correct $PATH, etc.
 phyluce_ required MUSCLE for installation, and MUSCLE was installed by conda_ as
 a dependency of phyluce_. Because ``$HOME/anaconda/bin`` is part of our path
 now, and because phyluce_ installed MUSCLE, we can also just run MUSCLE on the
-command-line, with:
+command-line, with::
 
-.. command-output:: muscle -h
+    $ muscle
+
+    MUSCLE v3.8.31 by Robert C. Edgar
+
+    http://www.drive5.com/muscle
+    This software is donated to the public domain.
+    Please cite: Edgar, R.C. Nucleic Acids Res 32(5), 1792-97.
+
+
+    Basic usage
+
+        muscle -in <inputfile> -out <outputfile>
+
+    Common options (for a complete list please see the User Guide):
+
+        -in <inputfile>    Input file in FASTA format (default stdin)
+        -out <outputfile>  Output alignment in FASTA format (default stdout)
+        -diags             Find diagonals (faster for similar sequences)
+        -maxiters <n>      Maximum number of iterations (integer, default 16)
+        -maxhours <h>      Maximum time to iterate in hours (default no limit)
+        -html              Write output in HTML format (default FASTA)
+        -msf               Write output in GCG MSF format (default FASTA)
+        -clw               Write output in CLUSTALW format (default FASTA)
+        -clwstrict         As -clw, with 'CLUSTAL W (1.81)' header
+        -log[a] <logfile>  Log to file (append if -loga, overwrite if -log)
+        -quiet             Do not write progress messages to stderr
+        -version           Display version information and exit
+
+Without refinement (very fast, avg accuracy similar to T-Coffee): -maxiters 2
+Fastest possible (amino acids): -maxiters 1 -diags -sv -distance1 kbit20_3
+Fastest possible (nucleotides): -maxiters 1 -diags
 
 This is true for other binaries you install from our repository (e.g. velveth,
 velvetg, abyss-pe, mafft) or any other conda_ repository - those binaries are
