@@ -69,7 +69,7 @@ Much of this code is already written and in use by several of the
 to the code in the future.
 
 Who wrote this?
-===============
+---------------
 
 This documentation was written primarily by Brant Faircloth
 (http://faircloth-lab.org). Brant is also responsible for the development of
