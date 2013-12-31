@@ -6,8 +6,7 @@ python:
 
 notifications:
   email:
-    recipients:
-      - brant@faircloth-lab.org
+    - brant@faircloth-lab.org
 
 # whitelist
 branches:
