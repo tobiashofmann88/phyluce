@@ -14,7 +14,7 @@ Created on 29 December 2013 10:37 PST (-0800)
 
 from __future__ import absolute_import
 
-from phyluce.align import extract
+from phyluce.align import pull
 from phyluce.align.var import align_io_choices
 from phyluce.common import is_dir, FullPaths, CreateDir
 
@@ -98,4 +98,4 @@ def configure_parser(sub_parsers):
 
 
 def extract_taxa(args, parser):
-    extract.main(args, parser)
+    pull.main(args, parser)
