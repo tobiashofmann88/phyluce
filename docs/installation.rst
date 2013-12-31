@@ -1,77 +1,237 @@
 .. include:: global.rst
 
-Software Installation Overview
-==============================
+Installation
+============
 
-phyluce_ (phy-loo-chee) is a software package for analyzing data collected from
-ultraconserved elements in organismal genomes.  The package includes a number of
-tools spanning assembly of raw read data to contigs (using velvet_) to
-identification of UCE from assembled contigs to alignment generation, trimming,
-and data preparation for analysis.
+phyluce_ uses a number of tools that allow it to assemble data, search for UCE
+loci, align results reads, manipulate alignments, prepare alignments for
+analysis, etc.  To accomplish these goals, phyluce_ uses wrappers around a
+number of programs that do each of these tasks (sometimes phyluce can use
+several different programs that accomplish the same task in different ways).
+As a result, the
+`dependency chain <http://en.wikipedia.org/wiki/Dependency_hell>`_ , or the
+programs that phyluce_ requires to run, is reasonably complex.
 
-phyluce_ also has many parts, some necessary for certain operations, and others
-useful only for very specific operations.  phyluce_ is also under constant
-development, and the code-base changes rather rapidly, as we need new features,
-generate new data formats, and fix bugs.
+In previous versions (< 2.x), we required users to install a number of
+different software packages, get those into the user's `$PATH`, cross their
+fingers, and hope that everything ran smoothly (it usually did not).
 
-The code within this package assumes that you have a familiarity with the
-command line (AKA Terminal in OSX) and **all** of the tools within the package
-are driven from the command-line.  This allows us to focus on generating new
-tools which are largely useable across different operating systems, without
-getting bogged down with the intricacies of generating platform-specific
-graphical user interfaces.
+In the current versions (> 2.x), we have remove a number of dependencies, **and
+we very strongly suggest** that users install phyluce_ using either the
+anaconda_ or miniconda_ Python distributions.
 
-Below, we've outlined the necessary steps for installing the software and
-pre-requisites.  We have focused on installation steps for OSX and Unix/Linux
-because those are the operating systems that we use.
+Why conda?
+----------
 
-Installing the necessary pre-requisites is the most challenging part of getting
-the various software components working.  On OSX, we've tried to simplify these
-steps by providing packages through the homebrew_ package manager. On
-Unix/Linux, many of these packages are available through your 
-distribution-specific package manager or you can install from source.
+It may seem odd to impose a particular disitribution on users, and we largely
+agree.  However, conda_ makes it very easy for us to distribute both Python_ and
+non- Python packages (e.g. velvet, abYss, etc.), setup identical environments
+across very heterogenous platforms (unices, osx, etc.), make sure all the
+`$PATHs` are correct, and have things run largely as expected. In short, it's as
+close to a "one-click" install that we will probably ever get.
 
-Needed Python packages
-**********************
+Install Process
+====================
 
-* python 2.7 (installed by default on OSX 10.7+)
-* numpy (>= 1.5)
-* biopython (>= 1.54)
-* seqtools
+.. important:: We build and test phyluce_ using 64-bit, linux and osx computers
+   (i.e., x86_64). Most modern computers are of this type.  As such, we only
+   support phyluce_ on 64-bit (x86_64) machines, and the conda_ packges that we
+   have built are only available for this architecture.  We can potentially add
+   i386 support if it is a major request.
 
-* dendropy (optional - used in some programs)
-* ete2 (optional - used in some programs)
-* scipy (optional - used in some programs)
-* bx-python (optional - used in some programs)
+.. important:: We do not support phyluce_ on Windows.
 
-Needed external applications
-****************************
+The installation process is now a 3-step process.  You need to:
 
-All external applications should be placed in your `$PATH`, so that they are
-available to the code within the PHYLUCE_ package.
+#. Install JAVA
+#. Install conda_ (either anaconda_ or miniconda_)
+#. Install phyluce_
 
-* lastz
-* mafft
-* velvet and velvetoptimiser (for contig assembly)
-* bioperl (required by velvetoptimiser)
+Installing phyluce_ will install all of the required binaries, libraries, and
+Python_ dependencies.
 
-* splitaake (optional - used for demultiplexing Illumina reads)
-* illumiprocessor (optional - used for trimming and renaming Illumina reads)
-* AMOS (optional - used for coverage calculations of assembled UCE loci)
-* muscle (optional - used as an alignment option for UCE contigs)
-* dialign (optional - used as an alignment option for UCE contigs)
-* saté (optional - used for alternate alignment of UCE contigs)
-* raxml (optional - used for tree inference)
-* mrbayes (optional - used for tree inference)
-* cloudforest (optional - used for tree inference)
+Install JAVA
+------------
 
-Useful tools
-************
+Although we're using conda_, you need to install a JAVA distribution for your
+platform.  You should install **JAVA7**, as that will ensure a number of future
+tools in phyluce_ will work on your platform.  Installing JAVA is a little
+tricky across different platforms (and somewhat beyond the scope of this document),
+but we described, below, how we usually do it.
 
-* "Kent Source" packages
-* A good text editor (VIM, textmate2, etc.)
+If you do not see your (linux) distribution, check your package manager.
+
+Apple OS X
+^^^^^^^^^^
+
+To install JAVA 1.7, download and install the JAVA 1.7 package from Oracle here:
+http://www.java.com/en/download/manual.jsp
+
+CentOS/Fedora linux
+^^^^^^^^^^^^^^^^^^^
+
+You can install the JRE with the following `yum` command::
+
+    su -c "yum install java-1.7.0-openjdk"
+
+Debian/Ubuntu linux
+^^^^^^^^^^^^^^^^^^^
+
+You can install the JRE with the following `apt-get` command::
+
+    sudo apt-get install openjdk-7-jre
 
 
-Software Installation (OSX)
-===========================
+Install Anaconda or miniconda
+-----------------------------
 
+After you installed JAVA, you need to install anaconda_ or miniconda_.  Which
+one you choose is up to you, your needs, how much disk space you have, and if
+you are on a fast/slow connection.
+
+.. tip:: Do I want anaconda_ or miniconda_?
+   The major difference between the two python distributions is that anaconda_
+   comes with many, many packages pre-installed, while miniconda_ comes with
+   almost zero packages pre-installed.  As such, the anaconda_ distribution is
+   roughly 200-500 MB in size while the miniconda_ distribution is 15-30 MB
+   in size.
+
+anaconda
+^^^^^^^^
+
+Follow the instructions here for your platform:
+http://docs.continuum.io/anaconda/install.html
+
+miniconda
+^^^^^^^^^
+
+Find the correct `miniconda-2.x.x` file for your platform from this link:
+http://repo.continuum.io/miniconda/, download that file, and then run::
+
+    bash Miniconda-2.2.x-Linux-x86_64.sh  [linux]
+    bash Miniconda-2.2.x-MacOSX-x86_64.sh [osx]
+
+Ensure that the correct location for conda_ or miniconda_ are added to your
+$PATH (this occurs automatically on the $BASH shell).
+
+.. command-output:: echo $PATH | grep anaconda | awk '{split($0,a,":"); print a[1]}'
+   :shell:
+
+You can also check that anaconda is running by running the `python -V` command
+
+.. command-output:: python -V
+
+Notice that the output shows we're using the "Anaconda 1.8.0" version of Python_.
+If you do not see the expected output, then you likely need to edit your $PATH
+variable to add anaconda_ or miniconda_ as the first entry.
+
+Should you need to edit your path, the easiest way to do that is to open
+``~/.bashrc`` with a text editor (if you are using ZSH, this will be
+``~/.zshrc``) and add, as the last line::
+
+    export PATH=$HOME/path/to/conda/bin:$PATH
+
+where ``$HOME/path/to/conda/bin`` is the location of anaconda/miniconda in your
+home directory (usually ``$HOME/anaconda/bin`` or ``$HOME/miniconda/bin``).
+
+
+Install phyluce
+---------------
+
+Installing phyluce is very easy using conda_.  There are two steps.  First,
+add the `faircloth-lab conda repository <http://conda.binstar.org/faircloth-lab>`_
+to conda.  You can do that with the following command, which automatically edits
+your ``~/.condarc`` file)::
+
+    conda config --add channels http://conda.binstar.org/faircloth-lab
+
+Then, it's simply a matter of running::
+
+    conda install phyluce
+
+
+What conda installs
+-------------------
+
+When you install phyluce, it specifies a number of dependencies that it needs
+to run.  conda_ is great because it will pull specific **versions** of the
+required programs from the
+`faircloth-lab conda repository <http://conda.binstar.org/faircloth-lab>`_ and
+install those on your machine, setup the paths, etc.
+
+Below is a list of what phyluce_ requires for installation.
+
+Installed 3rd-party dependencies
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* trimmomatic 0.32
+* velvet 1.2.10
+* abyss 1.3.7 (built with boost and google-sparsehash)
+* lastz 1.02.00
+* mafft 7.13
+* muscle 3.8.31
+* raxml 8.0.1
+
+Installed python packages
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* Python 2.7 (sets conda default Python to 2.7)
+* numpy 1.7
+* BioPython 1.62
+* dendropy 3.12.0
+* illumiprocessor 2.0.3
+* phyluce 2.0.x
+
+Added benefits
+--------------
+
+An added benefit of using conda_ and installing packages in this way is that
+you can also run all of these binaries without worrying about setting the
+correct $PATH, etc.
+
+phyluce_ required MUSCLE for installation, and MUSCLE was installed by conda_ as
+a dependency of phyluce_. Because ``$HOME/anaconda/bin`` is part of our path
+now, and because phyluce_ installed MUSCLE, we can also just run MUSCLE on the
+command-line, with:
+
+.. command-output:: muscle -h
+
+This is true for other binaries you install from our repository (e.g. velveth,
+velvetg, abyss-pe, mafft) or any other conda_ repository - those binaries are
+all stored in $CONDA/bin.
+
+We have setup conda to install other files in a standard location as well.  So
+JAR files are stored in $CONDA/jar; libraries that you install from our repo are
+stored in $CONDA/lib, etc. The locations and versions are standardized within
+our conda_ distribution so that we always know where things are installed,
+hopefully avoiding lots of the problems with
+`dependency hell <http://en.wikipedia.org/wiki/Dependency_hell>`_ and making
+our lives easier.
+
+The structure of the conda repository that we use looks like the following::
+
+    $CONDA/ (<= can be main CONDA or CONDA env)
+        bin/
+            Binaries we build.
+        docs/
+            Pertinent documentation, if any.
+        include/
+            Header files (Qt, Boost)
+        jar/
+            Java Archive (JAR) Files
+        lib/
+            Libraries
+        libexec/
+            Helpers called by other programs (e.g. mafft)
+        share/
+            Additional support files
+        test/
+            Test data required by some programs.
+
+
+Other useful tools
+------------------
+
+You will need to be familiar with the command-line/terminal, and it helps to
+have a decent text editor for your platform (gedit [linux], Sublime Text
+[linux, osx], TextMate [osx]).
