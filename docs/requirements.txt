@@ -1,2 +1,0 @@
-phyluce
-sphinxcontrib-programoutput==0.8
