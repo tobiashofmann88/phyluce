@@ -3,11 +3,16 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 .. include:: global.rst
+.. |date| date:: %d %B %Y %H:%M %Z (%z)
 
 phyluce:  software for UCE (and general) phylogenomics
 ======================================================
 
 Release v\ |version|. (:ref:`Changelog`)
+
+:Author: Brant Faircloth
+:Date: |date|
+:Copyright: This documentation is available under a Creative Commons (`CC-BY`_) license.
 
 phyluce_ (phy-**loo**-chee) is a software package that was initially developed
 for analyzing data collected from ultraconserved elements in organismal genomes
@@ -46,13 +51,13 @@ Guide
    qc
    assembly
    uce-processing
+   citing
 
 Project info
 ============
 .. toctree::
    :maxdepth: 1
 
-   citing
    license
    changelog
    authors
