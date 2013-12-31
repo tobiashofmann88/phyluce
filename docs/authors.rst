@@ -1,11 +1,13 @@
-Authors
-========
+..  _Authors:
+
+Code Authors
+============
 
 * `Brant Faircloth <http://faircloth-lab.org/>`_ (brant **at** faircloth-lab
   **dot** org)
 
-Contributors
-============
+Code Contributors
+=================
 
 * `Nick Crawford <http://www.ngcrawford.com/>`_ (ngcrawford **at** gmail
   **dot** com)
