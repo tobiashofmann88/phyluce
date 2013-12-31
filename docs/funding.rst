@@ -1,8 +1,11 @@
 .. include:: global.rst
 
+*******
+Funding
+*******
 
-Primary Funding Sources
-=======================
+Primary Sources
+===============
 
 The `National Science Foundation (NSF) <http://www.nsf.gov>`_ and the
 `Smithsonian Institution <http://www.mnh.si.edu/>`_ have supported a large
@@ -17,8 +20,8 @@ portion of our work.  The specific programs and proposal identifiers are below:
   Biodiverse Planet <http://www.si.edu/Consortia/biodiversity>`_
 
 
-Secondary Funding Sources
-=========================
+Secondary Sources
+=================
 
 We have also received funding for computational support from and/or materials
 from the following organizations:
