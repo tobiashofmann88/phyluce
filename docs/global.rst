@@ -28,3 +28,4 @@
 .. _cli branch: https://github.com/faircloth-lab/phyluce/tree/cli
 .. _anaconda: http://docs.continuum.io/anaconda/install.html
 .. _miniconda: http://repo.continuum.io/miniconda/
+.. _CC-BY: http://creativecommons.org/licenses/by/4.0/
