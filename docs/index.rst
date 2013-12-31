@@ -47,21 +47,19 @@ Guide
 
    purpose
    installation
-   study-design
    qc
    assembly
    uce-processing
-   citing
 
 Project info
 ============
 .. toctree::
    :maxdepth: 1
 
+   citing
    license
    changelog
-   authors
-   contributors
+   attributions
    funding
    ack
 
