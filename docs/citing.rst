@@ -2,8 +2,9 @@
 
 ..  _Citing:
 
-Citing PHYLUCE
-==============
+******
+Citing
+******
 
 You can cite the `phyluce`_ repository using:
 
@@ -20,11 +21,10 @@ additional manuscript for the software, alone.
    spanning multiple evolutionary timescales. Systematic Biology 61: 717–726.
    doi:`10.1093/sysbio/SYS004 <http://doi.org/10.1093/sysbio/SYS004>`_.
 
-
 ..  _References:
 
-Other UCE Systematics References
-********************************
+References
+==========
 
 Here are some additional references that have used UCE data for phylogenomic
 inference at both "deep" and "shallow" timescales.  Most of these manuscripts
@@ -65,7 +65,7 @@ used an older version of the code:
 
 
 Other UCE References
-********************
+====================
 
 .. [GB2004] Bejerano G, Pheasant M, Makunin I, Stephen S, Kent WJ, et al. (2004)
    Ultraconserved elements in the human genome. Science 304: 1321–1325.
