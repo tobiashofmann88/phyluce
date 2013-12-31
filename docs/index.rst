@@ -22,10 +22,10 @@ information).
 The package now includes a number of tools spanning:
 
 * the assembly of raw read data to contigs
-* the identification of UCE from assembled contigs
-* parallel alignment generation, trimming, and data summary methods in
-  preparation for analysis
-* alignment and SNP calling using UCE or other raw-read data.
+* the separation of UCE loci from assembled contigs
+* parallel alignment generation, alignment trimming, and alignment data summary
+  methods in preparation for analysis
+* alignment and SNP calling using UCE or other types of raw-read data.
 
 As it stands, the phyluce_ package is useful for analyzing both data collected
 from UCE loci and also data collection from other types of loci for phylogenomic
@@ -37,7 +37,6 @@ issue tracker for phyluce_ is also `available on github
 <https://github.com/faircloth- lab/phyluce/issues>`_.  If you have an issue,
 please do all that you can to provide sufficient data **and** a test case
 demonstrating the issue.
-
 
 Guide
 =====
