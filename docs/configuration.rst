@@ -2,9 +2,9 @@
 
 ..  _Configuration:
 
-*************
-Configuration
-*************
+************************
+Configuration (Advanced)
+************************
 
 .. attention:: **If you installed** phyluce_ **using** conda_, the following
    section is unecessary for running your first data analysis.
