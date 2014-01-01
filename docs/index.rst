@@ -46,6 +46,7 @@ Guide
 
    purpose
    installation
+   configuration
    qc
    assembly
    uce-processing
