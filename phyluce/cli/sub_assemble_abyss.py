@@ -60,7 +60,7 @@ def configure_parser(sub_parsers):
         "--cores",
         type=int,
         default=1,
-        help="The number of compute cores/threads to run with Trinity"
+        help="The number of compute cores/threads to run with abYss"
     )
     sp.add_argument(
         "--subfolder",
@@ -87,7 +87,7 @@ def configure_parser(sub_parsers):
         "--clean",
         action="store_true",
         default=False,
-        help="Cleanup all intermediate Trinity files",
+        help="Cleanup all intermediate abYss files",
     )
     sp.set_defaults(func=run_abyss_assembly)
 

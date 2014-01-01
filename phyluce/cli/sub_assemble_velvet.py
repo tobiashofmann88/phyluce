@@ -59,7 +59,7 @@ def configure_parser(sub_parsers):
         "--cores",
         type=int,
         default=1,
-        help="The number of compute cores/threads to run with Velvet"
+        help="The number of compute cores/threads to run with velvet"
     )
     sp.add_argument(
         "--subfolder",
@@ -86,7 +86,7 @@ def configure_parser(sub_parsers):
         "--clean",
         action="store_true",
         default=False,
-        help="Cleanup all intermediate Trinity files",
+        help="Cleanup all intermediate velvet files",
     )
     sp.set_defaults(func=run_velvet_assembly)
 
