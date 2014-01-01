@@ -46,10 +46,12 @@ Guide
 
    purpose
    installation
+   organization
    qc
    assembly
    uce-processing
    configuration
+   subcommands
 
 Project info
 ============
