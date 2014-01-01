@@ -17,19 +17,27 @@ In previous versions (< 2.x), we required users to install a number of
 different software packages, get those into the user's `$PATH`, cross their
 fingers, and hope that everything ran smoothly (it usually did not).
 
-In the current versions (> 2.x), we have remove a number of dependencies, **and
+In the current versions (> 2.x), we have removed a number of dependencies, **and
 we very strongly suggest** that users install phyluce_ using either the
 anaconda_ or miniconda_ Python distributions.
+
+  .. note:: We do not support installing phyluce through means other than the
+     conda_ installer.  This means that we do not test phyluce_ against any
+     binaries, other than those we build and distribute through conda_.
+     **However**, with this in mind, you can configure phyluce_ to use binaries
+     of different provenance using options in the :ref:`Configuration` section.
 
 Why conda?
 ==========
 
 It may seem odd to impose a particular disitribution on users, and we largely
 agree.  However, conda_ makes it very easy for us to distribute both Python_ and
-non- Python packages (e.g. velvet, abYss, etc.), setup identical environments
+non-Python packages (e.g. velvet, abYss, etc.), setup identical environments
 across very heterogenous platforms (unices, osx, etc.), make sure all the
-`$PATHs` are correct, and have things run largely as expected. In short, it's as
-close to a "one-click" install that we will probably ever get.
+`$PATHs` are correct, and have things run largely as expected. Using conda_ has
+several other benefits, including environment separation similar to virtualenv_.
+In short, using conda_ gets us as close to a "one-click" install that we will
+probably ever get.
 
 Install Process
 ===============
@@ -107,20 +115,36 @@ miniconda
 ^^^^^^^^^
 
 Find the correct `miniconda-2.x.x` file for your platform from this link:
-http://repo.continuum.io/miniconda/, download that file, and then run::
+http://repo.continuum.io/miniconda/, download that file, and then, as an
+unprivileged user, run::
 
     bash Miniconda-2.2.x-Linux-x86_64.sh  [linux]
     bash Miniconda-2.2.x-MacOSX-x86_64.sh [osx]
 
-Ensure that the correct location for conda_ or miniconda_ are added to your
-$PATH (this occurs automatically on the $BASH shell)::
+Now, you need to edit your `$PATH` to add the Miniconda distribution, you do
+that as follows::
+
+    echo "PATH=$HOME/anaconda/bin:\${PATH}" >> ~/.bashrc [if you use BASH]
+    echo "PATH=$HOME/anaconda/bin:\${PATH}" >> ~/.zshrc [if you use ZSH]
+
+.. note:: Although you have installed Miniconda, it is called anaconda once
+   it's installed.
+
+Checking your `$PATH`
+^^^^^^^^^^^^^^^^^^^^^
+
+Regardless of how you install anaconda_ or miniconda_, you need to check that
+you've installed the package correctly.  To ensure that the correct location for
+conda_ or miniconda_ are added to your $PATH (this occurs automatically on the
+$BASH shell), you can try the following, which should show the path to the
+anaconda distribution::
 
     $ echo $PATH | grep anaconda | awk '{split($0,a,":"); print a[1]}'
     /Users/bcf/anaconda/bin
 
 
-You can also check that anaconda is running by running the `python -V`
-command::
+You can also check that you have installed anaconda correctly by running the
+`python -V` command::
 
     $ python -V
     Python 2.7.6 :: Anaconda 1.8.0 (x86_64)
@@ -139,20 +163,61 @@ where ``$HOME/path/to/conda/bin`` is the location of anaconda/miniconda in your
 home directory (usually ``$HOME/anaconda/bin`` or ``$HOME/miniconda/bin``).
 
 
-Install phyluce
----------------
+Add the faircloth-lab repository to conda
+-----------------------------------------
 
-Installing phyluce is very easy using conda_.  There are two steps.  First,
-add the `faircloth-lab conda repository <http://conda.binstar.org/faircloth-lab>`_
+You need to add the location of the packages we need to your conda
+distributions.  to do taht, you have to add the
+`faircloth-lab conda repository <http://conda.binstar.org/faircloth-lab>`_
 to conda.  You can do that with the following command, which automatically edits
 your ``~/.condarc`` file)::
 
     conda config --add channels http://conda.binstar.org/faircloth-lab
 
-Then, it's simply a matter of running::
+
+Install phyluce
+---------------
+
+Now, installing phyluce_ and all of it's dependencies is simply a matter of
+running::
 
     conda install phyluce
 
+This step will also automatically configure phyluce_ to know where all of the
+different binaries are located (the subject of the :ref:`Configuration`
+section).
+
+Run phyluce
+-----------
+
+Once you've installed phyluce_ using conda_, there will be an executable file
+named `phyluce` in your $PATH that we will run for all subsequent analyses.
+You can find the location of the executable using::
+
+    $ which phyluce
+    /Users/bcf/anaconda/bin/phyluce
+
+Because phyluce_ is in our `$PATH`, running `phyluce` should produce the
+following output::
+
+    $ phyluce
+    usage: phyluce [-h] [-V] command ...
+
+    phyluce is a software package for processing UCEand other phylogenomic data
+    for systematics andpopulation genetics.
+
+    positional arguments:
+      command
+        assemble     Assemble cleaned/trimmed sequencing reads.
+        fetch        Fetch (AKA get) UCE contigs from assembled data.
+        align        Alignment routines for UCE (and other) FASTA data.
+        convert      Convert files to different formats.
+        misc         Miscellaneous utilities for files and directories.
+        help         Get help info on a phyluce command.
+
+    optional arguments:
+      -h, --help     show this help message and exit
+      -V, --version  show program's version number and exit
 
 What conda installs
 ===================
@@ -165,8 +230,8 @@ install those on your machine, setup the paths, etc.
 
 Below is a list of what phyluce_ requires for installation.
 
-Installed 3rd-party dependencies
---------------------------------
+3rd-party dependencies
+----------------------
 
 * trimmomatic 0.32
 * velvet 1.2.10
@@ -176,8 +241,8 @@ Installed 3rd-party dependencies
 * muscle 3.8.31
 * raxml 8.0.1
 
-Installed python packages
--------------------------
+Python packages
+---------------
 
 * Python 2.7 (sets conda default Python to 2.7)
 * numpy 1.7
