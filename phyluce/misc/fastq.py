@@ -112,8 +112,7 @@ def main(args, parser):
             log.info(template.format("MEDIAN len.", numpy.median(r0)))
     elif not args.output and ((len(results) == 1 and args.csv)
                               or (len(results) > 1)):
-        log.info("file,reads,bp,avg_len,stderr_len,min_len,max_len,median_len,"
-                 "contigs>1kb")
+        log.info("file,reads,bp,avg_len,stderr_len,min_len,max_len,median_len")
         for r in results:
             r0, r1, r2 = r
             log.info("{},{},{},{},{},{},{},{}".format(
@@ -130,7 +129,7 @@ def main(args, parser):
         log.info("Writing CSV results to {}".format(args.output))
         with open(args.output, 'w') as outf:
             outf.write("file,reads,bp,avg_len,stderr_len,min_len,max_len,"
-                       "median_len,contigs>1kb\n")
+                       "median_len\n")
             for r0, r1, r2 in results:
                 outf.write("{},{},{},{},{},{},{},{}".format(
                     os.path.basename(r2),
