@@ -21,11 +21,11 @@ In the current versions (> 2.x), we have removed a number of dependencies, **and
 we very strongly suggest** that users install phyluce_ using either the
 anaconda_ or miniconda_ Python distributions.
 
-  .. note:: We do not support installing phyluce through means other than the
-     conda_ installer.  This means that we do not test phyluce_ against any
-     binaries, other than those we build and distribute through conda_.
-     **However**, with this in mind, you can configure phyluce_ to use binaries
-     of different provenance using options in the :ref:`Configuration` section.
+.. note:: We do not support installing phyluce through means other than the
+   conda_ installer.  This means that we do not test phyluce_ against any
+   binaries, other than those we build and distribute through conda_.
+   **However**, with this in mind, you can configure phyluce_ to use binaries
+   of different provenance using options in the :ref:`Configuration` section.
 
 Why conda?
 ==========
@@ -43,10 +43,10 @@ Install Process
 ===============
 
 .. important:: We build and test phyluce_ using 64-bit, linux and osx computers
-   (i.e., x86_64). Most modern computers are of this type.  As such, we only
-   support phyluce_ on 64-bit (x86_64) machines, and the conda_ packges that we
+   (i.e., x86_64). Most modern computers are of this type.  As such, we **only
+   support** phyluce_ **on 64-bit (x86_64) machines**, and the conda_ packges that we
    have built are only available for this architecture.  We can potentially add
-   i386 support if it is a major request.
+   x86 support if it is a major request.
 
 .. important:: We do not support phyluce_ on Windows.
 
@@ -114,30 +114,31 @@ http://docs.continuum.io/anaconda/install.html
 miniconda
 ^^^^^^^^^
 
-Find the correct `miniconda-2.x.x` file for your platform from this link:
-http://repo.continuum.io/miniconda/, download that file, and then, as an
-unprivileged user, run::
+Find the correct `miniconda-2.x.x` file for your platform from
+http://repo.continuum.io/miniconda/ and download that file. When that has
+completed, run::
 
     bash Miniconda-2.2.x-Linux-x86_64.sh  [linux]
     bash Miniconda-2.2.x-MacOSX-x86_64.sh [osx]
 
-Now, you need to edit your `$PATH` to add the Miniconda distribution, you do
-that as follows::
+Now, you need to edit your `$PATH` to add the Miniconda distribution.  You can
+do that manually using a text editor (the best way), or you can quickly quickly
+run::
 
-    echo "PATH=$HOME/anaconda/bin:\${PATH}" >> ~/.bashrc [if you use BASH]
-    echo "PATH=$HOME/anaconda/bin:\${PATH}" >> ~/.zshrc [if you use ZSH]
+    echo "export PATH=$HOME/anaconda/bin:\${PATH}" >> ~/.bashrc [if you use BASH]
+    echo "export PATH=$HOME/anaconda/bin:\${PATH}" >> ~/.zshrc [if you use ZSH]
 
-.. note:: Although you have installed Miniconda, it is called anaconda once
-   it's installed.
+.. note:: Once you have installed Miniconda, it is called **anaconda**
+   forevermore.
 
 Checking your `$PATH`
 ^^^^^^^^^^^^^^^^^^^^^
 
-Regardless of how you install anaconda_ or miniconda_, you need to check that
-you've installed the package correctly.  To ensure that the correct location for
-conda_ or miniconda_ are added to your $PATH (this occurs automatically on the
-$BASH shell), you can try the following, which should show the path to the
-anaconda distribution::
+Regardless of how you install anaconda_, you need to check that you've installed
+the package correctly.  To ensure that the correct location for conda_ or
+miniconda_ are added to your $PATH (this occurs automatically on the $BASH
+shell), you can try the following, which should show the path to the anaconda
+distribution::
 
     $ echo $PATH | grep anaconda | awk '{split($0,a,":"); print a[1]}'
     /Users/bcf/anaconda/bin
