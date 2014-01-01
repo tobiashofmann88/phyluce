@@ -42,13 +42,13 @@ probably ever get.
 Install Process
 ===============
 
-.. important:: We build and test phyluce_ using 64-bit, linux and osx computers
+.. attention:: We build and test phyluce_ using 64-bit, linux and osx computers
    (i.e., x86_64). Most modern computers are of this type.  As such, we **only
    support** phyluce_ **on 64-bit (x86_64) machines**, and the conda_ packges that we
    have built are only available for this architecture.  We can potentially add
    x86 support if it is a major request.
 
-.. important:: We do not support phyluce_ on Windows.
+.. attention:: We do not support phyluce_ on Windows.
 
 The installation process is now a 3-step process.  You need to:
 
@@ -261,9 +261,9 @@ you can also run all of these binaries without worrying about setting the
 correct $PATH, etc.
 
 phyluce_ required MUSCLE for installation, and MUSCLE was installed by conda_ as
-a dependency of phyluce_. Because ``$HOME/anaconda/bin`` is part of our path
-now, and because phyluce_ installed MUSCLE, we can also just run MUSCLE on the
-command-line, with::
+a dependency of phyluce_. Because ``$HOME/anaconda/bin`` (which we will now call
+`$CONDA`) is part of our path now, and because phyluce_ installed MUSCLE, we can
+also just run MUSCLE on the command-line, with::
 
     $ muscle
 
@@ -293,21 +293,20 @@ command-line, with::
         -quiet             Do not write progress messages to stderr
         -version           Display version information and exit
 
-Without refinement (very fast, avg accuracy similar to T-Coffee): -maxiters 2
-Fastest possible (amino acids): -maxiters 1 -diags -sv -distance1 kbit20_3
-Fastest possible (nucleotides): -maxiters 1 -diags
+    Without refinement (very fast, avg accuracy similar to T-Coffee): -maxiters 2
+    Fastest possible (amino acids): -maxiters 1 -diags -sv -distance1 kbit20_3
+    Fastest possible (nucleotides): -maxiters 1 -diags
 
 This is true for other binaries you install from our repository (e.g. velveth,
 velvetg, abyss-pe, mafft) or any other conda_ repository - those binaries are
-all stored in $CONDA/bin.
+all stored in `$CONDA/bin`.
 
 We have setup conda to install other files in a standard location as well.  So
-JAR files are stored in $CONDA/jar; libraries that you install from our repo are
-stored in $CONDA/lib, etc. The locations and versions are standardized within
-our conda_ distribution so that we always know where things are installed,
-hopefully avoiding lots of the problems with
-`dependency hell <http://en.wikipedia.org/wiki/Dependency_hell>`_ and making
-our lives easier.
+JAR files are stored in `$CONDA/jar`; libraries that you install from our repo
+are stored in `$CONDA/lib`, etc. The locations and versions are standardized
+within our conda_ distribution so that we always know where things are
+installed, hopefully avoiding lots of the problems with `dependency hell
+<http://en.wikipedia.org/wiki/Dependency_hell>`_ and making our lives easier.
 
 The structure of the conda repository that we use looks like the following::
 
@@ -328,7 +327,6 @@ The structure of the conda repository that we use looks like the following::
             Additional support files
         test/
             Test data required by some programs.
-
 
 Other useful tools
 ==================
