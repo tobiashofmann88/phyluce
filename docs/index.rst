@@ -47,7 +47,7 @@ Guide
    purpose
    installation
    organization
-   qc
+   quality-control
    assembly
    uce-processing
    configuration
