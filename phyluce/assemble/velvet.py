@@ -20,6 +20,8 @@ from phyluce.log import setup_logging
 from phyluce.common import which
 from phyluce.raw_reads import get_input_data, get_input_files
 
+#import pdb
+
 
 def run_velveth(velveth, kmer, reads, output, log):
     log.info("Running velveth against data")
@@ -146,8 +148,8 @@ def main(args, parser):
     else:
         pass
     try:
-        velveth = which('velveth')[0]
-        velvetg = which('velvetg')[0]
+        velveth = which('velveth')
+        velvetg = which('velvetg')
     except:
         raise EnvironmentError("Cannot find velveth or velvetg.  Ensure they "
                                "are installed and in your $PATH")
