@@ -21,6 +21,7 @@ from phyluce.cli import main_fetch
 from phyluce.cli import main_align
 from phyluce.cli import main_convert
 from phyluce.cli import main_misc
+#from phyluce.cli import main_config
 
 
 def main():
@@ -49,6 +50,7 @@ def main():
     main_align.configure_parser(sub_parsers)
     main_convert.configure_parser(sub_parsers)
     main_misc.configure_parser(sub_parsers)
+    #main_config.configure_parser(sub_parsers)
     main_help.configure_parser(sub_parsers)
 
     try:
