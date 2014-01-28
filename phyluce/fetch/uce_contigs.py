@@ -24,6 +24,8 @@ from Bio import SeqIO
 from phyluce import lastz
 from phyluce.log import setup_logging
 
+import pdb
+
 
 def create_probe_database(log, db, organisms, uces):
     """Create the UCE-match database"""
@@ -178,11 +180,6 @@ def new_get_probe_name(header, regex):
 def main(args, parser):
     log, my_name = setup_logging(args)
     regex = re.compile(args.regex)
-    if not os.path.isdir(args.output):
-        os.makedirs(args.output)
-    else:
-        raise IOError("The directory {} already exists. Please check "
-                      "and remove by hand.".format(args.output))
     uces = set(new_get_probe_name(seq.id, regex)
                for seq in SeqIO.parse(open(args.probes, 'rU'), 'fasta'))
     if args.dupefile:
