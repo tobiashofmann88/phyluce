@@ -35,7 +35,7 @@ try:
     else:
         __version__ = "git {}".format(stdout.strip())
     os.chdir(cwd)
-except IOError:
+except:
     __version__ = "2.0.0"
     if not os.getcwd == cwd:
         os.chdir(cwd)
