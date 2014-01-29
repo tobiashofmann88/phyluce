@@ -53,7 +53,7 @@ def configure_parser(sub_parsers):
     sp.add_argument(
         "--output",
         required=True,
-        action=CreateDir,
+        action=FullPaths,
         help="The path to the output file you want to create."
     )
     sp.add_argument(
