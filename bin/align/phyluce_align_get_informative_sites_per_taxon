@@ -1,0 +1,191 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+-(c) 2015 Brant Faircloth || http://faircloth-lab.org/
+-All rights reserved.
+
+-This code is distributed under a 3-clause BSD license. Please see
+-LICENSE.txt for more information.
+
+Created by Brant Faircloth, Carl Oliveros on 07 August 2012 21:08 PDT (-0700)
+
+Description:  Counts informative sites, number of differences per locus.  Also counts
+informative sites for each taxon (output suffix: inf.taxon.txt) and informative sites
+where each taxon has data, i.e., includes autapomorphies (output suffix: inf.data.txt).
+
+"""
+
+import os
+import glob
+import argparse
+import multiprocessing
+import sys
+from Bio import AlignIO
+from collections import Counter
+from phyluce.helpers import is_dir, FullPaths, get_file_extensions
+from phyluce.log import setup_logging
+
+def get_args():
+    parser = argparse.ArgumentParser(
+            description="""Count the number of informative sites in a given set of alignment"""
+        )
+    parser.add_argument(
+            '--alignments',
+            required=True,
+            type=is_dir,
+            action=FullPaths,
+            help="""The directory containing the alignment files"""
+        )
+    parser.add_argument(
+            '--output-prefix',
+            type=str,
+            default=None,
+            help="""The prefix for the output files"""
+        )
+    parser.add_argument(
+            "--input-format",
+            dest="input_format",
+            choices=['fasta', 'nexus', 'phylip', 'clustal', 'emboss', 'stockholm'],
+            default='nexus',
+            help="""The input alignment format""",
+        )
+    parser.add_argument(
+            "--cores",
+            type=int,
+            default=1,
+            help="""The number of cores to use""",
+        )
+    parser.add_argument(
+            "--log-path",
+            action=FullPaths,
+            type=is_dir,
+            default=None,
+            help="The path to a directory to hold logs"
+        )
+    parser.add_argument(
+            "--verbosity",
+            type=str,
+            choices=["INFO", "WARN", "CRITICAL"],
+            default="INFO",
+            help="The logging level to use"
+        )
+    return parser.parse_args()
+
+def get_files(input_dir, input_format):
+    alignments = []
+    for ftype in get_file_extensions(input_format):
+        alignments.extend(glob.glob(os.path.join(input_dir, "*{}".format(ftype))))
+    return alignments
+
+def get_informative_sites(count):
+    # remove gaps
+    del count['-']
+    # remove N
+    del count['N']
+    # remove ?
+    del count['?']
+    sufficient_sites = len(count)
+    if sufficient_sites >= 2:
+        sufficient_sequences = sum([1 for i in count.values() if i >= 2])
+        informative_bases = [base for base in count.keys() if count[base] >= 2]
+        if sufficient_sequences >= 2:
+            return True, informative_bases
+    return False, []
+
+def get_differences(count):
+    # remove gaps
+    del count['-']
+    # remove N
+    del count['N']
+    # remove ?
+    del count['?']
+    # remove X
+    del count['X']
+    sufficient_sites = len(count)
+    # counted, different = (1,1)
+    if sufficient_sites >= 2:
+        return (1, 1)
+    # counted, not different = (1,0)
+    elif sufficient_sites >= 1 and count.most_common()[0][1] > 1:
+        return (1, 0)
+    # not counted, not different = (0,0)
+    else:
+        return (0, 0)
+
+def worker(work):
+    args, f = work
+    aln = AlignIO.read(f, args.input_format)
+    name = os.path.splitext(os.path.basename(f))[0]
+    informative_sites = []
+    informative_for_taxon = [0] * len(aln)
+    informative_with_data = [0] * len(aln)
+    differences = []
+    counted_sites =  []
+    for idx in xrange(aln.get_alignment_length()):
+        col = aln[:, idx].upper()
+        count = Counter(col)
+        informative_flag, informative_bases = get_informative_sites(count)
+        if informative_flag:
+            informative_sites.append(1)
+            for k in xrange(len(col)):
+                if col[k] in informative_bases:
+                    informative_for_taxon[k] += 1
+                    informative_with_data[k] += 1
+                elif col[k] in ['A', 'C', 'G', 'T']:
+                    informative_with_data[k] += 1
+        else:
+            informative_sites.append(0)
+        diff = get_differences(count)
+        if diff == (1, 1):
+            counted_sites.append(1)
+            differences.append(1)
+        elif diff == (1, 0):
+            differences.append(0)
+            counted_sites.append(1)
+        else:
+            differences.append(0)
+            counted_sites.append(0)
+    sys.stdout.write(".")
+    sys.stdout.flush()
+    return (name, aln.get_alignment_length(), sum(informative_sites), sum(differences), sum(counted_sites), informative_for_taxon, informative_with_data)
+
+def main():
+    args = get_args()
+    log, my_name = setup_logging(args)
+    work = [(args, f) for f in get_files(args.alignments, args.input_format)]
+    log.info("Processing {} alignments".format(len(work)))
+    if args.cores <= 1:
+        results = map(worker, work)
+    elif args.cores > 1:
+        pool = multiprocessing.Pool(args.cores)
+        results = pool.map(worker, work)
+    print("")
+    log.info("Writing to output filenames: {0} and {1}".format(args.output_prefix + '.inf.taxon.txt', args.output_prefix + '.inf.data.txt'))
+    outf_inf_for_taxon = open(args.output_prefix + '.inf.taxon.txt', 'w')
+    outf_inf_with_data = open(args.output_prefix + '.inf.data.txt', 'w')
+    # read in one alignment to get taxon list
+    align = AlignIO.read(work[0][1], args.input_format)
+    taxon_list = [taxon.id for taxon in align]
+    total_sites = []
+    total_differences = []
+    all_counted_sites = []
+    # write out output
+    outf_inf_for_taxon.write("locus\tlength\tinformative_sites\tdifferences\tcounted_bases\t{}\n".format("\t".join(taxon_list)))
+    outf_inf_with_data.write("locus\tlength\tinformative_sites\tdifferences\tcounted_bases\t{}\n".format("\t".join(taxon_list)))
+    for locus in results:
+        total_sites.append(locus[2])
+        total_differences.append(locus[3])
+        all_counted_sites.append(locus[4])
+        outf_inf_for_taxon.write("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\n".format(locus[0], locus[1], locus[2], locus[3], locus[4], "\t".join(str(n) for n in locus[5])))
+        outf_inf_with_data.write("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\n".format(locus[0], locus[1], locus[2], locus[3], locus[4], "\t".join(str(n) for n in locus[6])))        
+    log.info("Total sites = {}".format(sum(total_sites)))
+    log.info("Sites per locus = {0:.2f}".format(sum(total_sites) / float(len(total_sites))))
+    log.info("Total differences = {}".format(sum(total_differences)))
+    log.info("Differences per locus = {0:.2f}".format(sum(total_differences) / float(len(total_differences))))
+    log.info("All sites checked for differences = {}".format(sum(all_counted_sites)))
+    text = " Completed {} ".format(my_name)
+    log.info(text.center(65, "="))
+
+if __name__ == '__main__':
+    main()
+
