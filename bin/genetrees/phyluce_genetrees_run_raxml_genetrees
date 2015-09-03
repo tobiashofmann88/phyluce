@@ -175,12 +175,8 @@ def main():
         else:
             trees = map(run_raxml, work)
         output = open(os.path.join(args.output, "all-best-trees.tre"), 'w')
-	best_genetrees = []
         for treedir in trees:
-            for extn in ('.best', '.o-bfgs'):
-                best_genetrees.extend(glob.glob(os.path.join(treedir, "RAxML_bestTree{}".format(extn))))
-        for best_genetree in best_genetrees:
-            best_tree = open(best_genetree, 'rb').read()
+            best_tree = open(os.path.join(treedir, "RAxML_bestTree.best"), 'rb').read()
             output.write(best_tree)
         output.close()
     text = " Completed {} ".format(my_name)
