@@ -9,7 +9,7 @@ Created on 27 April 2014 17:37 PDT (-0700)
 
 Author: Carl Oliveros
 
-Description: Discards loci according to a completeness configuration file.
+Description: Prunes sequence data from alignments according to a completeness configuration file.
 
 """
 
@@ -19,6 +19,7 @@ import glob
 import argparse
 import ConfigParser
 import random
+import numpy
 from multiprocessing import Pool
 from Bio.Nexus import Nexus
 from Bio.Seq import Seq
@@ -28,7 +29,7 @@ from phyluce.log import setup_logging
 
 def get_args():
     parser = argparse.ArgumentParser(
-        description='Discards loci according to a completeness configuration file.')
+        description='Prunes sequence data from alignments according to a completeness configuration file.')
     parser.add_argument(
         "--alignments", 
         required=True,
@@ -54,7 +55,12 @@ def get_args():
         "--completeness-conf",
         action=FullPaths,
         type=str,
-        help="""A config-formatted file containing full-name:proportion type""")
+        help="""A config-formatted file containing full name:proportion type, under heading [samples]""")
+    parser.add_argument(
+        "--probability-matrix",
+        action=FullPaths,
+        type=str,
+        help="""A config-formatted file containing uce name:propability of enrichment, under heading [probs]""")
     parser.add_argument(
         "--log-path",
         action=FullPaths,
@@ -69,7 +75,7 @@ def get_args():
         help="The logging level to use.")
     return parser.parse_args()    
 
-def generate_exclusion_lists(sampling_map, files):
+def generate_exclusion_lists(sampling_map, files, args):
     exclusion_lists = {}
     for taxon, options in sampling_map.iteritems():
         proportion, mode = options.split()
@@ -77,6 +83,21 @@ def generate_exclusion_lists(sampling_map, files):
             # randomly choose loci to exclude
             numloci = int((float(proportion))*len(files))
             locus_list = random.sample(files, numloci)
+        if mode == 'u':  
+            # choose loci to exclude according to probability matrix
+            locus_list = []
+            # loci to be discarded
+            numloci = int((float(proportion))*len(files))
+            # read locus probabilities
+            prob_config = ConfigParser.ConfigParser()
+            prob_config.readfp(open(args.probability_matrix))
+            prob_matrix = dict(prob_config.items('probs'))
+            while len(locus_list) < numloci:
+                candidate = random.choice(files)
+                if candidate not in locus_list:
+                    candidate_name = os.path.splitext(os.path.basename(candidate))[0]
+                    if numpy.random.binomial(1, 1 - float(prob_matrix[candidate_name])):
+                        locus_list.append(candidate) 
         # insert alternative modes here
         exclusion_lists[taxon] = locus_list
     return exclusion_lists
@@ -100,11 +121,11 @@ def filter_files_worker(params):
     # write out to incomplete output
     if alignment.ntax > 2:
         new_name = os.path.join(args.output_incomplete,os.path.split(f)[1])
-    	alignment.write_nexus_data(new_name)
+        alignment.write_nexus_data(new_name)
     # write out to complete output
     if alignment.ntax == numtaxa:
         new_name = os.path.join(args.output_complete,os.path.split(f)[1])
-    	alignment.write_nexus_data(new_name)
+        alignment.write_nexus_data(new_name)
     # write progress dots
     sys.stdout.write('.')
     sys.stdout.flush()
@@ -126,8 +147,7 @@ def main():
     sampling_config.readfp(open(args.completeness_conf))
     sampling_map = dict(sampling_config.items('samples'))
     # generate exclusion lists
-    exclusion_lists = generate_exclusion_lists(sampling_map, files)
-    print(exclusion_lists)
+    exclusion_lists = generate_exclusion_lists(sampling_map, files, args)
     # filter loci
     params = [[f, args, exclusion_lists] for f in files]
     log.info("Filtering loci")
