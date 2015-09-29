@@ -98,26 +98,29 @@ def generate_exclusion_lists(sampling_map, files, args):
     exclusion_lists = {}
     for taxon, options in sampling_map.iteritems():
         proportion, mode = options.split()
-        if mode == 'r':  
-            # randomly choose loci to exclude
-            numloci = int((float(proportion))*len(files))
-            locus_list = random.sample(files, numloci)
-        if mode == 'u':  
-            # choose loci to exclude according to probability matrix
+        # loci to be discarded
+        numloci = int((float(proportion))*len(files))
+        if numloci > 0:
+            if mode == 'r':  
+                # randomly choose loci to exclude
+                locus_list = random.sample(files, numloci)
+            if mode == 'u':  
+                # choose loci to exclude according to probability matrix
+                locus_list = []
+                numloci = int((float(proportion))*len(files))
+                # read locus probabilities
+                prob_config = ConfigParser.ConfigParser()
+                prob_config.readfp(open(args.probability_matrix))
+                prob_matrix = dict(prob_config.items('probs'))
+                while len(locus_list) < numloci:
+                    candidate = random.choice(files)
+                    if candidate not in locus_list:
+                        candidate_name = os.path.splitext(os.path.basename(candidate))[0]
+                        if numpy.random.binomial(1, 1 - float(prob_matrix[candidate_name])):
+                            locus_list.append(candidate) 
+            # insert alternative modes here
+        else:
             locus_list = []
-            # loci to be discarded
-            numloci = int((float(proportion))*len(files))
-            # read locus probabilities
-            prob_config = ConfigParser.ConfigParser()
-            prob_config.readfp(open(args.probability_matrix))
-            prob_matrix = dict(prob_config.items('probs'))
-            while len(locus_list) < numloci:
-                candidate = random.choice(files)
-                if candidate not in locus_list:
-                    candidate_name = os.path.splitext(os.path.basename(candidate))[0]
-                    if numpy.random.binomial(1, 1 - float(prob_matrix[candidate_name])):
-                        locus_list.append(candidate) 
-        # insert alternative modes here
         exclusion_lists[taxon] = locus_list
     return exclusion_lists
 
@@ -139,7 +142,7 @@ def filter_files_worker(params):
         alignment.nchar = len(alignment.matrix[taxon]._data)
     # write alignments to output directories
     for prop in args.completeness_levels:
-    	min_taxa = int(math.ceil(numtaxa * float(prop) / 100))
+        min_taxa = int(math.ceil(numtaxa * float(prop) / 100))
         if alignment.ntax >= min_taxa:
             new_name = os.path.join(output_dirs[prop],os.path.split(f)[1])
             alignment.write_nexus_data(new_name)
@@ -181,7 +184,7 @@ def main():
     print ""
     for prop in args.completeness_levels:
         files = glob.glob(os.path.join(output_dirs[prop], '*.nexus'))
-    	log.info("{0} alignments written to {1} complete matrix".format(len(files), prop))    
+        log.info("{0} alignments written to {1} complete matrix".format(len(files), prop))    
     # end
     text = " Completed {} ".format(my_name)
     log.info(text.center(65, "="))
