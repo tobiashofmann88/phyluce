@@ -147,6 +147,7 @@ def main():
     sampling_config.readfp(open(args.completeness_conf))
     sampling_map = dict(sampling_config.items('samples'))
     # generate exclusion lists
+    log.info("Generating exclusion lists")
     exclusion_lists = generate_exclusion_lists(sampling_map, files, args)
     # filter loci
     params = [[f, args, exclusion_lists] for f in files]
@@ -157,6 +158,10 @@ def main():
     else:
         map(filter_files_worker, params)
     print ""
+    files = glob.glob(os.path.join(args.output_complete, '*.nexus'))
+    log.info("{} alignments written to complete matrix".format(len(files)))    
+    files = glob.glob(os.path.join(args.output_incomplete, '*.nexus'))
+    log.info("{} alignments written to incomplete matrix".format(len(files)))    
     # end
     text = " Completed {} ".format(my_name)
     log.info(text.center(65, "="))
