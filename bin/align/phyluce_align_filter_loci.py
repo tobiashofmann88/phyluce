@@ -20,6 +20,8 @@ import argparse
 import ConfigParser
 import random
 import numpy
+import math
+import shutil
 from multiprocessing import Pool
 from Bio.Nexus import Nexus
 from Bio.Seq import Seq
@@ -37,15 +39,15 @@ def get_args():
         action=FullPaths,
         help="The input directory containing nexus-formatted alignments")
     parser.add_argument(
-        "--output-incomplete", 
+        "--output-prefix", 
         required=True,
-        action=CreateDir,
-        help="The directory in which to store the incomplete alignment files")
+        help="The prefix to use for directories in which to store the incomplete alignment files")
     parser.add_argument(
-        "--output-complete", 
-        required=True,
-        action=CreateDir,
-        help="The directory in which to store the complete alignment files")
+        "--completeness-levels", 
+        nargs='+',
+        type=str,
+        default=['75','100'],
+        help="Proportions of taxa that must be present in each locus.  Default=[75, 100]")
     parser.add_argument(
         "--cores",
         type=int,
@@ -54,6 +56,7 @@ def get_args():
     parser.add_argument(
         "--completeness-conf",
         action=FullPaths,
+        required=True,
         type=str,
         help="""A config-formatted file containing full name:proportion type, under heading [samples]""")
     parser.add_argument(
@@ -74,6 +77,22 @@ def get_args():
         default="INFO",
         help="The logging level to use.")
     return parser.parse_args()    
+
+def create_dir(directory):
+    # get the full path
+    d = os.path.abspath(os.path.expanduser(directory))
+    # check to see if directory exists
+    if os.path.exists(d):
+        answer = raw_input("[WARNING] Output directory {} exists, REMOVE [Y/n]? ".format(d))
+        if answer == "Y":
+            shutil.rmtree(d)
+        else:
+            print "[QUIT]"
+            sys.exit()
+    # create the new directory
+    os.makedirs(d)
+    return d
+
 
 def generate_exclusion_lists(sampling_map, files, args):
     exclusion_lists = {}
@@ -103,7 +122,7 @@ def generate_exclusion_lists(sampling_map, files, args):
     return exclusion_lists
 
 def filter_files_worker(params):
-    f, args, exclusion_lists = params
+    f, args, exclusion_lists, output_dirs = params
     delete_taxa = [taxon for taxon in exclusion_lists.keys() if f in exclusion_lists[taxon] ]
     alignment = Nexus.Nexus(f)
     numtaxa = alignment.ntax
@@ -118,14 +137,12 @@ def filter_files_worker(params):
         alignment.matrix = alignment.crop_matrix(exclude=gaps)
         taxon = alignment.matrix.keys()[0]
         alignment.nchar = len(alignment.matrix[taxon]._data)
-    # write out to incomplete output
-    if alignment.ntax > 2:
-        new_name = os.path.join(args.output_incomplete,os.path.split(f)[1])
-        alignment.write_nexus_data(new_name)
-    # write out to complete output
-    if alignment.ntax == numtaxa:
-        new_name = os.path.join(args.output_complete,os.path.split(f)[1])
-        alignment.write_nexus_data(new_name)
+    # write alignments to output directories
+    for prop in args.completeness_levels:
+    	min_taxa = int(math.ceil(numtaxa * float(prop) / 100))
+        if alignment.ntax >= min_taxa:
+            new_name = os.path.join(output_dirs[prop],os.path.split(f)[1])
+            alignment.write_nexus_data(new_name)
     # write progress dots
     sys.stdout.write('.')
     sys.stdout.flush()
@@ -135,6 +152,10 @@ def main():
     args = get_args()
     # setup logging
     log, my_name = setup_logging(args)
+    # create output directories
+    output_dirs = {}
+    for prop in args.completeness_levels:
+        output_dirs[prop] = create_dir(args.output_prefix + "_" + prop + "_nexus")
     files = glob.glob(os.path.join(os.path.expanduser(args.alignments), '*.nexus'))
     log.info("{} alignments detected in input directory".format(len(files)))
     if len(files) == 0:
@@ -150,7 +171,7 @@ def main():
     log.info("Generating exclusion lists")
     exclusion_lists = generate_exclusion_lists(sampling_map, files, args)
     # filter loci
-    params = [[f, args, exclusion_lists] for f in files]
+    params = [[f, args, exclusion_lists, output_dirs] for f in files]
     log.info("Filtering loci")
     if args.cores > 1:
         pool = Pool(args.cores)
@@ -158,10 +179,9 @@ def main():
     else:
         map(filter_files_worker, params)
     print ""
-    files = glob.glob(os.path.join(args.output_complete, '*.nexus'))
-    log.info("{} alignments written to complete matrix".format(len(files)))    
-    files = glob.glob(os.path.join(args.output_incomplete, '*.nexus'))
-    log.info("{} alignments written to incomplete matrix".format(len(files)))    
+    for prop in args.completeness_levels:
+        files = glob.glob(os.path.join(output_dirs[prop], '*.nexus'))
+    	log.info("{0} alignments written to {1} complete matrix".format(len(files), prop))    
     # end
     text = " Completed {} ".format(my_name)
     log.info(text.center(65, "="))
