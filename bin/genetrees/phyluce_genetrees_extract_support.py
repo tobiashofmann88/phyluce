@@ -94,7 +94,7 @@ def main():
             trees = dendropy.TreeList()
             for f in files:
                 trees.read_from_path(f,'newick')    
-            print(trees.as_string(schema="fasta"))
+            print(trees.as_string(schema='newick'))
             for nd in node_names:
             	print(nodes[nd])
                 freq = trees.frequency_of_bipartition(labels=nodes[nd])
