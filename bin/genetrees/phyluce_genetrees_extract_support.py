@@ -69,7 +69,7 @@ def read_config(conf):
     for nd in nodes.keys():
         nodes[nd] = nodes[nd].split
     # retrieve directories
-    directories = config_file.items('directories')
+    directories = config_file.items('directories').keys()
     # retrieve filenames
     filenames = dict(config_file.items('filenames'))
     return nodes, directories, filenames
