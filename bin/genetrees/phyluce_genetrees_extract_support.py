@@ -80,12 +80,12 @@ def main():
     # setup logging
     log, my_name = setup_logging(args)
     nodes, directories, filenames = read_config(args.config)
-    dirs = directories.sort()
-    node_names = nodes.keys().sort()
+    dirs = sorted(directories)
+    node_names = sorted(nodes.keys())
     outf = open(args.output, 'w')
     header = '\t' + '\t'.join(node_names) + '\n'
     outf.write(header)
-    for method in filenames.keys().sort():
+    for method in sorted(filenames.keys()):
         outf.write('{}\n'.format(method))
         for dir in dirs:
             short_dir = rchop(os.path.basename(dir), "_speciestree")
