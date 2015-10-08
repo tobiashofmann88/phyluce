@@ -61,7 +61,8 @@ def rchop(name, ending):
 
 def read_config(conf):
     # read config file
-    config_file = ConfigParser.ConfigParser()
+    config_file = ConfigParser.RawConfigParser(allow_no_value=True)
+    config_file.optionxform = str
     config_file.readfp(open(conf))
     # retrieve nodes
     nodes = dict(config_file.items('nodes'))
