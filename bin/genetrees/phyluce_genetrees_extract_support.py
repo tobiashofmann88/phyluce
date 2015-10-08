@@ -93,9 +93,10 @@ def main():
             files = glob.glob(os.path.join(dir, filenames[method]))
             trees = dendropy.TreeList()
             for f in files:
-                trees.read_from_path(f,'newick')
-            print(len(trees))
+                trees.read_from_path(f,'newick')    
+            print(trees.as_string(schema="fasta"))
             for nd in node_names:
+            	print(nodes[nd])
                 freq = trees.frequency_of_bipartition(labels=nodes[nd])
                 outf.write('{}\t'.format(freq))
             outf.write('\n')
