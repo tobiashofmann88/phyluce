@@ -95,6 +95,7 @@ def main():
             for f in files:
                 trees.read_from_path(f,'newick')
             for nd in node_names:
+                print(nodes[nd])            
                 freq = trees.frequency_of_split(labels=nodes[nd])
                 outf.write('{}\t'.format(freq))
             outf.write('\n')
