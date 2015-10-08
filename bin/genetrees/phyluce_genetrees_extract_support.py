@@ -67,7 +67,9 @@ def read_config(conf):
     # retrieve nodes
     nodes = dict(config_file.items('nodes'))
     for nd in nodes.keys():
-        nodes[nd] = nodes[nd].split
+        list = nodes[nd].split
+        nodes[nd] = list
+        print(nodes[nd])
     # retrieve directories
     directories = config_file.options('directories')
     # retrieve filenames
@@ -95,7 +97,6 @@ def main():
             for f in files:
                 trees.read_from_path(f,'newick')
             for nd in node_names:
-                print(nodes[nd])            
                 freq = trees.frequency_of_split(labels=nodes[nd])
                 outf.write('{}\t'.format(freq))
             outf.write('\n')
